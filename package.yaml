@@ -12,6 +12,10 @@ extra-source-files:
 
 description:         Please see the README on GitHub at <https://github.com/githubuser/frost#readme>
 
+ghc-options:
+- -fplugin=Polysemy.Plugin
+
+
 default-extensions:
 - DataKinds
 - FlexibleContexts
@@ -27,6 +31,7 @@ default-extensions:
 dependencies:
 - base >= 4.7 && < 5
 - polysemy
+- polysemy-plugin
 - pandoc
 
 library:
