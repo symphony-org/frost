@@ -23,4 +23,5 @@ generateDocs :: ( Member (Input Pandoc) r
 generateDocs  = input >>= transform >>= either throw output
 
 runDynamicContent :: Sem (DynamicContent ': r) a -> Sem r a
-runDynamicContent = undefined
+runDynamicContent = interpret $ \case
+  Transform pandoc -> return $ Right pandoc
