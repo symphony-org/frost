@@ -7,8 +7,8 @@ import Polysemy.Output
 import Polysemy.Error
 import Text.Pandoc
 
-
 data DynamicError = DynamicError String
+  deriving Show
 
 data DynamicContent m a where
   Transform :: Pandoc -> DynamicContent m (Either DynamicError Pandoc)
@@ -21,3 +21,6 @@ generateDocs :: ( Member (Input Pandoc) r
                 , Member (Error DynamicError) r
                 ) => Sem r ()
 generateDocs  = input >>= transform >>= either throw output
+
+runDynamicContent :: Sem (DynamicContent ': r) a -> Sem r a
+runDynamicContent = undefined
