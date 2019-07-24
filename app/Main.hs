@@ -2,21 +2,40 @@ module Main where
 
 import Frost
 
-import Data.Functor
+import Prelude hiding (readFile, writeFile)
+import Data.Function
+import qualified Data.Text as T
+import System.Exit
 import Text.Pandoc
 import Polysemy
 import Polysemy.Input
 import Polysemy.Output
 import Polysemy.Error
+import PolysemyContrib
 
 main :: IO ()
 main =  generate >>= handleErrors
   where
-    generate =  runM  $ runError $ runDynamicContent $ fetchInputFile $  fetchOutFile $ generateDocs
-    handleErrors = either (putStrLn.show) (\_ -> return ())
+    generate =  generateDocs
+      & fetchInputFile
+      & writeOutFile
+      & runFileProviderIO
+      & runDynamicContent
+      & runError @DynamicError
+      & runError @PandocError
+      & runM
+    handleErrors = either (die.show) (either (die.show) (\_ -> exitSuccess))
 
-fetchInputFile :: Sem (Input Pandoc ': r) a -> Sem r a
-fetchInputFile = undefined
+fetchInputFile :: (
+    Member (Lift IO) r
+  , Member FileProvider r
+  , Member (Error PandocError) r
+  ) => Sem (Input Pandoc ': r) a -> Sem r a
+fetchInputFile = interpret $ \case
+  Input -> do
+    content <- readFile "documentation.md"
+    fromEitherSem $ (sendM $ runIO $ readMarkdown def content)
 
-fetchOutFile :: Sem (Output Pandoc ': r) a -> Sem r a
-fetchOutFile = undefined
+writeOutFile :: Sem (Output Pandoc ': r) a -> Sem r a
+writeOutFile = undefined
+

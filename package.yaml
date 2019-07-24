@@ -33,6 +33,7 @@ dependencies:
 - polysemy
 - polysemy-plugin
 - pandoc
+- text
 
 library:
   source-dirs: src
