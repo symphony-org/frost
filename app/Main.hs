@@ -34,8 +34,21 @@ fetchInputFile :: (
 fetchInputFile = interpret $ \case
   Input -> do
     content <- readFile "documentation.md"
-    fromEitherSem $ (sendM $ runIO $ readMarkdown def content)
+    fromPandocIO $ readMarkdown def content
 
-writeOutFile :: Sem (Output Pandoc ': r) a -> Sem r a
-writeOutFile = undefined
+writeOutFile :: (
+    Member (Lift IO) r
+  , Member FileProvider r
+  , Member (Error PandocError) r
+  ) => Sem (Output Pandoc ': r) a -> Sem r a
+writeOutFile = interpret $ \case
+  Output pandoc -> do
+    content <- fromPandocIO $ writeHtml4String def pandoc
+    writeFile "documentation.html" content
 
+fromPandocIO :: (
+    PandocMonad PandocIO
+  , Member (Error PandocError) r
+  , Member (Lift IO) r
+  ) => PandocIO a -> Sem r a
+fromPandocIO pioa = fromEitherSem $ sendM $ runIO pioa
