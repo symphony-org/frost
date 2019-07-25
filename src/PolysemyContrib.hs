@@ -3,6 +3,7 @@ module PolysemyContrib where
 
 import Polysemy
 import Polysemy.Error
+import Data.Time.Clock
 
 import qualified Data.Text as T
 import qualified Data.Text.IO as TIO
@@ -20,3 +21,12 @@ runFileProviderIO :: (Member (Lift IO) r) => Sem (FileProvider ': r) a -> Sem r 
 runFileProviderIO = interpret $ \case
   ReadFile path -> sendM $ TIO.readFile path
   WriteFile path content -> sendM $ TIO.writeFile path content
+
+data SystemEffect m a where
+  CurrentTime :: SystemEffect m UTCTime
+  
+makeSem ''SystemEffect
+
+runSystemEffect :: Member (Lift IO) r => Sem (SystemEffect ': r) a -> Sem r a
+runSystemEffect = interpret $ \case
+  CurrentTime -> sendM getCurrentTime
