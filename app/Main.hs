@@ -36,7 +36,9 @@ fetchInputFile :: (
 fetchInputFile = interpret $ \case
   Input -> do
     content <- readFile "documentation.md"
-    fromPandocIO $ readMarkdown def content
+    fromPandocIO $ readMarkdown settings content
+  where
+    settings = def { readerExtensions = extensionsFromList [Ext_yaml_metadata_block, Ext_backtick_code_blocks]}
 
 writeOutFile :: (
     Member (Lift IO) r
