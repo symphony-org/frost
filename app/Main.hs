@@ -11,6 +11,7 @@ import Polysemy
 import Polysemy.Input
 import Polysemy.Output
 import Polysemy.Error
+import Polysemy.Trace
 import PolysemyContrib
 
 main :: IO ()
@@ -21,6 +22,7 @@ main =  generate >>= handleErrors
       & writeOutFile
       & runFileProviderIO
       & runDynamicContent
+      & runTraceIO
       & runError @DynamicError
       & runError @PandocError
       & runM
