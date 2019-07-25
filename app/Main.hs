@@ -22,6 +22,7 @@ main =  generate >>= handleErrors
       & writeOutFile
       & runFileProviderIO
       & runDynamicContent
+      & runSystemEffect
       & runTraceIO
       & runError @DynamicError
       & runError @PandocError
