@@ -12,29 +12,18 @@ import Text.Pandoc hiding (trace)
 import Data.Map.Strict
 import Data.Traversable
 
-data DynamicError = DynamicError String
-  deriving Show
-
-data DynamicContent m a where
-  Transform :: Pandoc -> DynamicContent m (Either DynamicError Pandoc)
-
-makeSem ''DynamicContent
+data DynamicError = DynamicError String deriving Show
 
 generateDocs :: ( Member (Input Pandoc) r
                 , Member (Output Pandoc) r
-                , Member DynamicContent r
                 , Member (Error DynamicError) r
-                ) => Sem r ()
-generateDocs  = input >>= transform >>= either throw output
+                ) => (Pandoc -> Sem r (Either DynamicError Pandoc)) -> Sem r ()
+generateDocs  transform = input >>= transform >>= either throw output
 
-runDynamicContent :: (
-    Member Trace r
-  , Member SystemEffect r
-  ) => Sem (DynamicContent ': r) a -> Sem r a
-runDynamicContent = interpret $ \case
-  Transform (Pandoc meta blocks) -> do
-    newMeta <- addToMeta defaultsMandatoryPlugin meta
-    return $ Right (Pandoc newMeta blocks)
+transform :: Pandoc -> Sem r (Either DynamicError Pandoc)
+transform (Pandoc meta blocks) = do
+  newMeta <- addToMeta defaultsMandatoryPlugin meta
+  return $ Right (Pandoc newMeta blocks)
 
 data Plugin r = Plugin {
                      addToMeta :: Meta -> Sem r Meta

@@ -17,11 +17,10 @@ import PolysemyContrib
 main :: IO ()
 main =  generate >>= handleErrors
   where
-    generate =  generateDocs
+    generate =  generateDocs transform
       & fetchInputFile
       & writeOutFile
       & runFileProviderIO
-      & runDynamicContent
       & runSystemEffect
       & runTraceIO
       & runError @DynamicError
