@@ -1,9 +1,10 @@
 module Main where
 
 import Frost
+import Frost.Plugins (transform, plugins)
 
 import Prelude hiding (readFile, writeFile)
-import Data.Function
+import Data.Function ((&))
 import qualified Data.Text as T
 import System.Exit
 import Text.Pandoc
