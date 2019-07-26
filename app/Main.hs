@@ -17,7 +17,7 @@ import PolysemyContrib
 main :: IO ()
 main =  generate >>= handleErrors
   where
-    generate =  generateDocs transform
+    generate =  generateDocs (transform plugins)
       & fetchInputFile
       & writeOutFile
       & runFileProviderIO

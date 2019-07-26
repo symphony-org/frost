@@ -20,9 +20,9 @@ generateDocs :: ( Member (Input Pandoc) r
                 ) => (Pandoc -> Sem r (Either DynamicError Pandoc)) -> Sem r ()
 generateDocs  transform = input >>= transform >>= either throw output
 
-transform :: Pandoc -> Sem r (Either DynamicError Pandoc)
-transform (Pandoc meta blocks) = do
-  newMeta <- addToMeta defaultsMandatoryPlugin meta
+transform :: [Plugin r] -> Pandoc -> Sem r (Either DynamicError Pandoc)
+transform plugins (Pandoc meta blocks) = do
+  newMeta <- addToMeta (head plugins) meta
   return $ Right (Pandoc newMeta blocks)
 
 data Plugin r = Plugin {
@@ -30,7 +30,7 @@ data Plugin r = Plugin {
                      }
 
 plugins :: Member SystemEffect r => [Plugin r]
-plugins = [timestampPlugin]
+plugins = [timestampPlugin, defaultsMandatoryPlugin]
 
 defaultsMandatoryPlugin :: Plugin r
 defaultsMandatoryPlugin = Plugin atm
