@@ -36,6 +36,7 @@ dependencies:
 - text
 - containers
 - time
+- simple-cmd
 
 library:
   source-dirs: src
