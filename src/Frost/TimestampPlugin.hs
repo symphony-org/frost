@@ -7,7 +7,7 @@ import PolysemyContrib
 import Data.Map.Strict
 
 timestampPlugin :: Member SystemEffect r => Plugin r
-timestampPlugin = Plugin atm
+timestampPlugin = Plugin "timestamp:meta" (return []) atm
   where
     atm :: Member SystemEffect r =>  Meta -> Sem r Meta
     atm meta = do
