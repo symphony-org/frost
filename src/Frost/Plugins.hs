@@ -4,7 +4,7 @@ import Frost
 import Frost.Plugin
 import Frost.TimestampPlugin
 import Frost.DefaultsMandatoryPlugin
-
+import Data.List (find)
 import Control.Monad
 import Polysemy
 import PolysemyContrib
@@ -17,14 +17,16 @@ transform :: [Plugin r] -> Pandoc -> Sem r (Either DynamicError Pandoc)
 transform plugins (Pandoc meta blocks) = do
   let plugin = (head plugins) -- TODO LOL, use all plugins, not one
   newMeta <- addToMeta plugin meta
-  newBlocks <- traverse (extractFrostBlocks plugin) blocks
+  newBlocks <- traverse (extractFrostBlocks plugins) blocks
   return $ Right (Pandoc newMeta (join newBlocks))
 
   where
-    extractFrostBlocks plugin = (\case
-        CodeBlock ("",[name],[]) content ->
-          if name == "frost:" ++ pluginName plugin then substitute plugin content
-          else return [CodeBlock ("",["frost"],[]) name]
+    extractFrostBlocks plugins = (\case
+        CodeBlock ("",[name],[]) content -> do
+          let maybePlugin = find (\p -> "frost:" ++ pluginName p == name) plugins
+          case maybePlugin of
+            Just plugin ->  substitute plugin content
+            Nothing -> return [HorizontalRule]
         otherwise -> return [otherwise])
 
 plugins :: Member SystemEffect r => [Plugin r]
