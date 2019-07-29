@@ -61,3 +61,6 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - frost
+    - QuickCheck
+    - hspec
+    - raw-strings-qq
