@@ -12,7 +12,7 @@ data DynamicError = DynamicError String deriving Show
 generateDocs :: ( Member (Input Pandoc) r
                 , Member (Output Pandoc) r
                 , Member (Error DynamicError) r
-                ) => (Pandoc -> Sem r (Either DynamicError Pandoc)) -> Sem r ()
-generateDocs  transform = input >>= transform >>= either throw output
+                ) => (Pandoc -> Sem r Pandoc) -> Sem r ()
+generateDocs  transform = input >>= transform >>= output
 
 
