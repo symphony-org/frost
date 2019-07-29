@@ -7,7 +7,8 @@ import Polysemy.Output
 import Polysemy.Error
 import Text.Pandoc
 
-data DynamicError = DynamicError String deriving Show
+data DynamicError = PluginNotAvailable String | DynamicError String
+  deriving (Eq, Show)
 
 generateDocs :: ( Member (Input Pandoc) r
                 , Member (Output Pandoc) r

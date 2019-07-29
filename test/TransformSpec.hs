@@ -69,4 +69,13 @@ spec =
       transformedBlocks `shouldBe` [ HorizontalRule
                                    , Plain [Str "hello world!"]
                                    , Plain [Str "4"]]
-
+    it "should stop with error if plugin not found for given frost block" $ do
+      -- given
+      let blocks = [ HorizontalRule
+                  , CodeBlock ("",["frost:text:insert"],[]) ""]
+      let pandoc = Pandoc nullMeta blocks
+      let plugs = [purgePlugin]
+      -- when
+      let Left(error) =  run $ runError $ transform plugs pandoc
+      -- then
+      error `shouldBe` PluginNotAvailable "frost:text:insert"

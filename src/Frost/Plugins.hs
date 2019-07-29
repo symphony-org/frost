@@ -22,12 +22,13 @@ transform plugins (Pandoc meta blocks) = do
   return $ Pandoc newMeta (join newBlocks)
 
   where
+    extractFrostBlocks :: Member (Error DynamicError) r => [Plugin r] -> Block -> Sem r [Block]
     extractFrostBlocks plugins = (\case
         CodeBlock ("",[name],[]) content -> do
           let maybePlugin = find (\p -> "frost:" ++ pluginName p == name) plugins
           case maybePlugin of
             Just plugin ->  substitute plugin content
-            Nothing -> return [HorizontalRule]
+            Nothing -> throw $ PluginNotAvailable name
         otherwise -> return [otherwise])
 
 plugins :: Member SystemEffect r => [Plugin r]
