@@ -27,6 +27,12 @@ textPlugin text= Plugin { pluginName = "text:insert"
                     , addToMeta = \m -> return nullMeta
                     }
 
+doublePlugin ::  Plugin r
+doublePlugin= Plugin { pluginName = "double"
+                    , substitute = \i -> return [Plain [Str $ show $ 2 * read i]]
+                    , addToMeta = \m -> return nullMeta
+                    }
+
 spec :: Spec
 spec =
   describe "Frost.Plugins transform" $ do
@@ -39,6 +45,7 @@ spec =
       let Right(transformed) =  run $ transform [purgePlugin] pandoc
       -- then
       transformed `shouldBe` pandoc
+
     it "should substitute frost code blocks with content from plugin" $ do
       -- given
       let blocks = [ HorizontalRule
@@ -49,3 +56,18 @@ spec =
       -- then
       transformedBlocks `shouldBe` [ HorizontalRule
                                    , Plain [Str "hello world!"]]
+
+    it "should modify document with multiple plugins" $ do
+      -- given
+      let blocks = [ HorizontalRule
+                  , CodeBlock ("",["frost:text:insert"],[]) ""
+                  , CodeBlock ("",["frost:double"],[]) "2"]
+      let pandoc = Pandoc nullMeta blocks
+      let plugs = [doublePlugin, textPlugin "hello world!"]
+      -- when
+      let Right(Pandoc _ transformedBlocks) =  run $ transform plugs pandoc
+      -- then
+      transformedBlocks `shouldBe` [ HorizontalRule
+                                   , Plain [Str "hello world!"]
+                                   , Plain [Str "4"]]
+
