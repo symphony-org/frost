@@ -8,8 +8,7 @@ import Frost.Plugins (transform)
 import Text.Pandoc
 import Data.Function ((&))
 import Polysemy
-import Polysemy.Input
-import Polysemy.Output
+import Polysemy.Error
 import qualified Data.Text as T
 import Test.Hspec
 import Text.RawString.QQ
@@ -42,7 +41,7 @@ spec =
                    , Plain [Str "test"]]
       let pandoc = Pandoc nullMeta blocks
       -- when
-      let Right(transformed) =  run $ transform [purgePlugin] pandoc
+      let Right(transformed) =  run $ runError $ transform [purgePlugin] pandoc
       -- then
       transformed `shouldBe` pandoc
 
@@ -52,7 +51,7 @@ spec =
                    , CodeBlock ("",["frost:text:insert"],[]) ""]
       let pandoc = Pandoc nullMeta blocks
       -- when
-      let Right(Pandoc _ transformedBlocks) =  run $ transform [textPlugin "hello world!"] pandoc
+      let Right(Pandoc _ transformedBlocks) =  run $ runError $ transform [textPlugin "hello world!"] pandoc
       -- then
       transformedBlocks `shouldBe` [ HorizontalRule
                                    , Plain [Str "hello world!"]]
@@ -65,7 +64,7 @@ spec =
       let pandoc = Pandoc nullMeta blocks
       let plugs = [doublePlugin, textPlugin "hello world!"]
       -- when
-      let Right(Pandoc _ transformedBlocks) =  run $ transform plugs pandoc
+      let Right(Pandoc _ transformedBlocks) =  run $ runError $ transform plugs pandoc
       -- then
       transformedBlocks `shouldBe` [ HorizontalRule
                                    , Plain [Str "hello world!"]
