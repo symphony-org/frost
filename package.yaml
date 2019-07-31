@@ -37,6 +37,7 @@ dependencies:
 - containers
 - time
 - simple-cmd
+- MissingH
 
 library:
   source-dirs: src
