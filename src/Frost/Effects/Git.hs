@@ -8,19 +8,19 @@ import SimpleCmd.Git
 
 import qualified Data.Text as T
 
-data GitEffect m a where
-  DevsList :: GitEffect m [String]
+data Git m a where
+  DevsList :: Git m [String]
 
-makeSem ''GitEffect
+makeSem ''Git
 
-runGitEffect :: Member (Lift IO) r => Sem (GitEffect ': r) a -> Sem r a
-runGitEffect = interpret $ \case
+runGit :: Member (Lift IO) r => Sem (Git ': r) a -> Sem r a
+runGit = interpret $ \case
   DevsList -> sendM getContributors
 
 getContributors :: IO [String]
 getContributors  = do
     output <- git "log" ["--pretty=short", "-s"]
     let s = T.split (=='\n') (T.pack output)
-    let r = nub $ filter (\x -> startswith  "Author:" (T.unpack x)) s
-    let f = map (\x -> drop (length "Author: ") (T.unpack x)) r
+    let r = nub $ filter (startswith  "Author:" . T.unpack) s
+    let f = fmap (drop (length "Author: ") . T.unpack) r
     return $ f
