@@ -37,33 +37,28 @@ spec =
 
     it "should substitute frost code blocks with content from plugin" $ do
       -- given
-      let blocks = [ HorizontalRule
-                   , CodeBlock ("",["frost:text:insert"],[]) ""]
+      let blocks = [ CodeBlock ("",["frost:text:insert"],[]) ""]
       let pandoc = Pandoc nullMeta blocks
       -- when
       let Right(Pandoc _ transformedBlocks) =
             run $ runError $ transform [textPlugin "hello world!"] pandoc
       -- then
-      transformedBlocks `shouldBe` [ HorizontalRule
-                                   , Plain [Str "hello world!"]]
+      transformedBlocks `shouldBe` [ Plain [Str "hello world!"]]
 
     it "should modify document with multiple plugins" $ do
       -- given
-      let blocks = [ HorizontalRule
-                  , CodeBlock ("",["frost:text:insert"],[]) ""
-                  , CodeBlock ("",["frost:double"],[]) "2"]
+      let blocks = [ CodeBlock ("",["frost:text:insert"],[]) ""
+                   , CodeBlock ("",["frost:double"],[]) "2"]
       let pandoc = Pandoc nullMeta blocks
       let plugs = [doublePlugin, textPlugin "hello world!"]
       -- when
       let Right(Pandoc _ transformedBlocks) =  run $ runError $ transform plugs pandoc
       -- then
-      transformedBlocks `shouldBe` [ HorizontalRule
-                                   , Plain [Str "hello world!"]
+      transformedBlocks `shouldBe` [ Plain [Str "hello world!"]
                                    , Plain [Str "4"]]
     it "should stop with error if plugin not found for given frost block" $ do
       -- given
-      let blocks = [ HorizontalRule
-                  , CodeBlock ("",["frost:text:insert"],[]) ""]
+      let blocks = [CodeBlock ("",["frost:text:insert"],[]) ""]
       let pandoc = Pandoc nullMeta blocks
       let plugs = [purgePlugin]
       -- when
