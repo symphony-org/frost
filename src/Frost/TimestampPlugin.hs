@@ -17,7 +17,7 @@ timestampMetaPlugin = Plugin "timestamp:meta" (\_ -> return []) atm
     insertTimestamp t= insert "creation" (MetaString $ show t)
 
 timestampPlugin :: Member SystemEffect r => Plugin r
-timestampPlugin = Plugin "timestamp" sub (\m -> return m)
+timestampPlugin = Plugin "timestamp" sub pure
   where
     sub = (\_ ->  currentTime <&> render)
     render t = [Plain [Str $show t]]
