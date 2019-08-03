@@ -1,4 +1,3 @@
-{-# LANGUAGE QuasiQuotes #-}
 module TransformSpec where
 
 import Frost
@@ -11,7 +10,6 @@ import Polysemy
 import Polysemy.Error
 import qualified Data.Text as T
 import Test.Hspec
-import Text.RawString.QQ
 
 purgePlugin :: Plugin r
 purgePlugin = Plugin { pluginName = "null"
