@@ -1,10 +1,11 @@
 module Frost.TimestampPlugin where
 
 import Frost.Plugin
+import Frost.Effects.Sys
+
 import Data.Functor
 import Text.Pandoc
 import Polysemy
-import PolysemyContrib
 import Data.Map.Strict
 
 timestampMetaPlugin :: Member Sys r => Plugin r

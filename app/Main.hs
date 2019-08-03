@@ -3,6 +3,7 @@ module Main where
 import Frost
 import Frost.PandocRun (runInputPandoc, runOutputPandoc)
 import Frost.Effects.FileProvider
+import Frost.Effects.Sys
 
 import Data.Function ((&))
 import qualified Data.Text as T
