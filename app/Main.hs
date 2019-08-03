@@ -2,6 +2,7 @@ module Main where
 
 import Frost
 import Frost.PandocRun (runInputPandoc, runOutputPandoc)
+import Frost.Effects.FileProvider
 
 import Data.Function ((&))
 import qualified Data.Text as T
