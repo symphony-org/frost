@@ -1,7 +1,6 @@
 module Main where
 
 import Frost
-import Frost.Plugins (transform, plugins)
 import Frost.PandocRun (runInputPandoc, runOutputPandoc)
 
 import Data.Function ((&))
