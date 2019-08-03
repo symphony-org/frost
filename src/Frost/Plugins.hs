@@ -33,6 +33,7 @@ transform plugins (Pandoc meta blocks) = do
 
 plugins :: Member SystemEffect r => [Plugin r]
 plugins = [ timestampPlugin
+          , timestampMetaPlugin
           , defaultsMandatoryPlugin
           ]
 

@@ -51,7 +51,8 @@ spec =
                    , CodeBlock ("",["frost:text:insert"],[]) ""]
       let pandoc = Pandoc nullMeta blocks
       -- when
-      let Right(Pandoc _ transformedBlocks) =  run $ runError $ transform [textPlugin "hello world!"] pandoc
+      let Right(Pandoc _ transformedBlocks) =
+            run $ runError $ transform [textPlugin "hello world!"] pandoc
       -- then
       transformedBlocks `shouldBe` [ HorizontalRule
                                    , Plain [Str "hello world!"]]
