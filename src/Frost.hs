@@ -4,13 +4,14 @@ module Frost where
 import Frost.Plugin
 import Frost.TimestampPlugin
 import Frost.DefaultsMandatoryPlugin
+import Frost.Effects.Sys
+
 import Data.List (find)
 import Control.Monad
 import Polysemy
 import Polysemy.Input
 import Polysemy.Output
 import Polysemy.Error
-import PolysemyContrib
 import Text.Pandoc hiding (trace)
 import Text.Pandoc.Extensions
 import Data.Map.Strict
