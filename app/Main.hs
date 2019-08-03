@@ -20,7 +20,7 @@ main =  generate >>= handleErrors
       & runInputPandoc
       & runOutputPandoc
       & runFileProviderIO
-      & runSystemEffect
+      & runSys
       & runTraceIO
       & runError @DynamicError
       & runError @PandocError
