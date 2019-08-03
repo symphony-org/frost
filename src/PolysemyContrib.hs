@@ -13,11 +13,11 @@ import Data.Map
 fromEitherSem :: Member (Error e) r => Sem r (Either e a) -> Sem r a
 fromEitherSem sem = sem >>= either throw (\b -> return b)
 
-data SystemEffect m a where
-  CurrentTime :: SystemEffect m UTCTime
+data Sys m a where
+  CurrentTime :: Sys m UTCTime
   
-makeSem ''SystemEffect
+makeSem ''Sys
 
-runSystemEffect :: Member (Lift IO) r => Sem (SystemEffect ': r) a -> Sem r a
-runSystemEffect = interpret $ \case
+runSys :: Member (Lift IO) r => Sem (Sys ': r) a -> Sem r a
+runSys = interpret $ \case
   CurrentTime -> sendM getCurrentTime

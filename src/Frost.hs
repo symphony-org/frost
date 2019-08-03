@@ -48,7 +48,7 @@ transform plugins (Pandoc meta blocks) = do
             Nothing -> throw $ PluginNotAvailable name
         otherwise -> return [otherwise])
 
-plugins :: Member SystemEffect r => [Plugin r]
+plugins :: Member Sys r => [Plugin r]
 plugins = [ timestampPlugin
           , timestampMetaPlugin
           , defaultsMandatoryPlugin

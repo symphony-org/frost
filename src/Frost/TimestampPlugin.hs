@@ -7,14 +7,14 @@ import Polysemy
 import PolysemyContrib
 import Data.Map.Strict
 
-timestampMetaPlugin :: Member SystemEffect r => Plugin r
+timestampMetaPlugin :: Member Sys r => Plugin r
 timestampMetaPlugin = justMetaPlugin "timestamp:meta" (\meta -> do
   time <- currentTime
   return $ Meta $ (insertTimestamp time) $ unMeta meta)
   where
     insertTimestamp t= insert "creation" (MetaString $ show t)
 
-timestampPlugin :: Member SystemEffect r => Plugin r
+timestampPlugin :: Member Sys r => Plugin r
 timestampPlugin = justContentPlugin "timestamp" (\_ -> currentTime <&> render)
   where
     render t = [Plain [Str $show t]]
