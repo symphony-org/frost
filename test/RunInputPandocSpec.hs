@@ -2,6 +2,7 @@
 module RunInputPandocSpec where
 
 import Frost.PandocRun
+import Frost.Effects.FileProvider
 
 import Polysemy
 import Polysemy.Input
