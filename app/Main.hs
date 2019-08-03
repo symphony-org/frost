@@ -5,8 +5,8 @@ import Frost.PandocRun (runInputPandoc, runOutputPandoc)
 
 import Data.Function ((&))
 import qualified Data.Text as T
-import System.Exit
-import Text.Pandoc hiding (trace)
+import System.Exit (die, exitSuccess)
+import Text.Pandoc (PandocError)
 import Polysemy
 import Polysemy.Error
 import Polysemy.Trace
