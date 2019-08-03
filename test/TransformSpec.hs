@@ -12,21 +12,15 @@ import Test.Hspec
 
 purgePlugin :: Plugin r
 purgePlugin = Plugin { pluginName = "null"
-                    , substitute = \_ -> return []
-                    , addToMeta = \m -> return nullMeta
-                    }
+                     , substitute = \_ -> return []
+                     , addToMeta = \m -> return nullMeta
+                     }
 
 textPlugin :: String -> Plugin r
-textPlugin text= Plugin { pluginName = "text:insert"
-                    , substitute = \_ -> return [Plain [Str text]]
-                    , addToMeta = \m -> return nullMeta
-                    }
+textPlugin text = justContentPlugin "text:insert" (\_ -> return [Plain [Str text]])
 
 doublePlugin ::  Plugin r
-doublePlugin= Plugin { pluginName = "double"
-                    , substitute = \i -> return [Plain [Str $ show $ 2 * read i]]
-                    , addToMeta = \m -> return nullMeta
-                    }
+doublePlugin= justContentPlugin "double" (\i -> return [Plain [Str $ show $ 2 * read i]])
 
 spec :: Spec
 spec =
