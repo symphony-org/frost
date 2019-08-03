@@ -13,7 +13,6 @@ import qualified Data.Text as T
 import Test.Hspec
 import Text.RawString.QQ
 
-
 purgePlugin :: Plugin r
 purgePlugin = Plugin { pluginName = "null"
                     , substitute = \_ -> return []
