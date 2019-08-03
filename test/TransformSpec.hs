@@ -2,7 +2,6 @@ module TransformSpec where
 
 import Frost
 import Frost.Plugin
-import Frost.Plugins (transform)
 
 import Text.Pandoc
 import Data.Function ((&))
