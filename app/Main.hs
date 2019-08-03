@@ -7,7 +7,7 @@ import Prelude hiding (readFile, writeFile)
 import Data.Function ((&))
 import qualified Data.Text as T
 import System.Exit
-import Text.Pandoc
+import Text.Pandoc hiding (trace)
 import Polysemy
 import Polysemy.Input
 import Polysemy.Output
