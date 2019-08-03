@@ -7,7 +7,6 @@ import PolysemyContrib
 import Data.Map.Strict
 
 defaultsMandatoryPlugin :: Plugin r
-defaultsMandatoryPlugin = Plugin "meta.defaults" (\_ -> return []) atm
+defaultsMandatoryPlugin = justMetaPlugin "meta.defaults" (return . Meta . insertTitle . unMeta)
   where
-    atm  = return . Meta . insertTitle . unMeta
     insertTitle = insert "title" (MetaString $ "Documentation")

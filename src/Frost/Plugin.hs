@@ -8,3 +8,9 @@ data Plugin r = Plugin {
                      substitute :: String -> Sem r [Block],
                      addToMeta :: Meta -> Sem r Meta
                      }
+
+justContentPlugin :: String -> (String -> Sem r [Block]) -> Plugin r
+justContentPlugin pluginName substitute = Plugin pluginName substitute return
+
+justMetaPlugin :: String -> (Meta -> Sem r Meta) -> Plugin r
+justMetaPlugin pluginName addToMeta = Plugin pluginName (\_ -> return []) addToMeta
