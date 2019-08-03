@@ -24,6 +24,11 @@ transform plugins (Pandoc meta blocks) = do
   where
     extractFrostBlocks :: Member (Error DynamicError) r => [Plugin r] -> Block -> Sem r [Block]
     extractFrostBlocks plugins = (\case
+        Para [Code ("",[],[]) name] -> do
+          let maybePlugin = find (\p -> "frost:" ++ pluginName p == name) plugins
+          case maybePlugin of
+            Just plugin ->  substitute plugin ""
+            Nothing -> throw $ PluginNotAvailable name
         CodeBlock ("",[name],[]) content -> do
           let maybePlugin = find (\p -> "frost:" ++ pluginName p == name) plugins
           case maybePlugin of
