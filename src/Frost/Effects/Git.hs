@@ -13,9 +13,13 @@ data Git m a where
 
 makeSem ''Git
 
-runGit :: Member (Lift IO) r => Sem (Git ': r) a -> Sem r a
-runGit = interpret $ \case
+runGitIO :: Member (Lift IO) r => Sem (Git ': r) a -> Sem r a
+runGitIO = interpret $ \case
   DevsList -> sendM getContributors
+
+runGitPure :: [String] -> Sem (Git ': r) a -> Sem r a
+runGitPure devs = interpret $ \case
+  DevsList -> return devs
 
 getContributors :: IO [String]
 getContributors  = do
