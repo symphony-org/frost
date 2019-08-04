@@ -1,4 +1,4 @@
-module Frost.GitPlugin where
+module Frost.GitContributorsPlugin where
 
 import Frost.Plugin
 import Frost.Effects.Git
@@ -8,7 +8,7 @@ import Polysemy
 import PolysemyContrib
 import Data.Map.Strict
 
-gitPlugin :: Member Git r => Plugin r
-gitPlugin = justContentPlugin "git:devs" (\_ -> render <$> devsList)
+gitContributorsPlugin :: Member Git r => Plugin r
+gitContributorsPlugin = justContentPlugin "git:devs" (\_ -> render <$> devsList)
   where
     render devs = [BulletList $ fmap (\d -> [Plain [Str d]]) devs]
