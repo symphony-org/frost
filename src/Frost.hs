@@ -2,7 +2,7 @@
 module Frost where
 
 import Frost.Plugin
-import Frost.GitPlugin
+import Frost.GitContributorsPlugin
 import Frost.TimestampPlugin
 import Frost.DefaultsMandatoryPlugin
 import Frost.Effects.Git
@@ -55,5 +55,5 @@ plugins :: (Member Sys r, Member Git r) => [Plugin r]
 plugins = [ timestampPlugin
           , timestampMetaPlugin
           , defaultsMandatoryPlugin
-          , gitPlugin
+          , gitContributorsPlugin
           ]
