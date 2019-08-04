@@ -2,8 +2,10 @@
 module Frost where
 
 import Frost.Plugin
+import Frost.GitPlugin
 import Frost.TimestampPlugin
 import Frost.DefaultsMandatoryPlugin
+import Frost.Effects.Git
 import Frost.Effects.Sys
 
 import Data.List (find)
@@ -49,8 +51,9 @@ transform plugins (Pandoc meta blocks) = do
             Nothing -> throw $ PluginNotAvailable name
         otherwise -> return [otherwise])
 
-plugins :: Member Sys r => [Plugin r]
+plugins :: (Member Sys r, Member Git r) => [Plugin r]
 plugins = [ timestampPlugin
           , timestampMetaPlugin
           , defaultsMandatoryPlugin
+          , gitPlugin
           ]

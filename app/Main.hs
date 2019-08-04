@@ -3,6 +3,7 @@ module Main where
 import Frost
 import Frost.PandocRun (runInputPandoc, runOutputPandoc)
 import Frost.Effects.FileProvider
+import Frost.Effects.Git
 import Frost.Effects.Sys
 
 import Data.Function ((&))
@@ -22,10 +23,9 @@ main =  generate >>= handleErrors
       & runOutputPandoc
       & runFileProviderIO
       & runSys
+      & runGitIO
       & runTraceIO
       & runError @DynamicError
       & runError @PandocError
       & runM
     handleErrors = either (die.show) (either (die.show) (\_ -> exitSuccess))
-
-
