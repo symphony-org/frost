@@ -1,4 +1,4 @@
 module FrostError where
 
-data DynamicError = PluginNotAvailable String | ExitedWithFailure Int | DynamicError String
+data FrostError = PluginNotAvailable String | ExitedWithFailure Int | FrostError String
   deriving (Eq, Show)

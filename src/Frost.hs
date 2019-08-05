@@ -22,12 +22,12 @@ import Data.Traversable
 
 generateDocs :: ( Member (Input Pandoc) r
                 , Member (Output Pandoc) r
-                , Member (Error DynamicError) r
+                , Member (Error FrostError) r
                 ) => (Pandoc -> Sem r Pandoc) -> Sem r ()
 generateDocs  transform = input >>= transform >>= output
 
 
-transform :: Member (Error DynamicError) r => [Plugin r] -> Pandoc -> Sem r Pandoc
+transform :: Member (Error FrostError) r => [Plugin r] -> Pandoc -> Sem r Pandoc
 transform plugins (Pandoc meta blocks) = do
   let plugin = (head plugins) -- TODO LOL, use all plugins, not one
   newMeta <- addToMeta plugin meta
@@ -35,7 +35,7 @@ transform plugins (Pandoc meta blocks) = do
   return $ Pandoc newMeta (join newBlocks)
 
   where
-    extractFrostBlocks :: Member (Error DynamicError) r => [Plugin r] -> Block -> Sem r [Block]
+    extractFrostBlocks :: Member (Error FrostError) r => [Plugin r] -> Block -> Sem r [Block]
     extractFrostBlocks plugins = (\case
         Para [Code ("",[],[]) name] -> do
           let maybePlugin = find (\p -> "frost:" ++ pluginName p == name) plugins
