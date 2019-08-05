@@ -1,6 +1,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Frost where
 
+import FrostError
 import Frost.Plugin
 import Frost.GitContributorsPlugin
 import Frost.TimestampPlugin
@@ -18,9 +19,6 @@ import Text.Pandoc hiding (trace)
 import Text.Pandoc.Extensions
 import Data.Map.Strict
 import Data.Traversable
-
-data DynamicError = PluginNotAvailable String | DynamicError String
-  deriving (Eq, Show)
 
 generateDocs :: ( Member (Input Pandoc) r
                 , Member (Output Pandoc) r

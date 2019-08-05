@@ -38,6 +38,7 @@ dependencies:
 - time
 - simple-cmd
 - MissingH
+- process
 
 library:
   source-dirs: src

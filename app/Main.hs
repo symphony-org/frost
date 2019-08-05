@@ -1,6 +1,7 @@
 module Main where
 
 import Frost
+import FrostError
 import Frost.PandocRun (runInputPandoc, runOutputPandoc)
 import Frost.Effects.FileProvider
 import Frost.Effects.Git
