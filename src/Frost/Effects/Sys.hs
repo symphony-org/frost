@@ -23,7 +23,7 @@ runSysPure ct cmdFun = interpret $ \case
   Cmd command -> return $ cmdFun command
 
 runSysIO :: ( Member (Lift IO) r
-          , Member (Error DynamicError) r
+          , Member (Error FrostError) r
           ) => Sem (Sys ': r) a -> Sem r a
 runSysIO = interpret $ \case
   CurrentTime -> sendM getCurrentTime

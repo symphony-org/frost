@@ -26,7 +26,7 @@ main =  generate >>= handleErrors
       & runSysIO
       & runGitIO
       & runTraceIO
-      & runError @DynamicError
+      & runError @FrostError
       & runError @PandocError
       & runM
     handleErrors = either (die.show) (either (die.show) (\_ -> exitSuccess))
