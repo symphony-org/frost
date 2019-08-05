@@ -22,10 +22,10 @@ runSysPure ct cmdFun = interpret $ \case
   CurrentTime -> return ct
   Cmd command -> return $ cmdFun command
 
-runSys :: ( Member (Lift IO) r
+runSysIO :: ( Member (Lift IO) r
           , Member (Error DynamicError) r
           ) => Sem (Sys ': r) a -> Sem r a
-runSys = interpret $ \case
+runSysIO = interpret $ \case
   CurrentTime -> sendM getCurrentTime
   Cmd command -> executeCommand command >>= \case
     Left error -> throw error
