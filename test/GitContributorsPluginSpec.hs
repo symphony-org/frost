@@ -13,9 +13,6 @@ spec :: Spec
 spec =
   describe "GitContributorsPlugin" $ do
     it "should substitute frost code blocks with content from the git plugin" $ do
-      -- given
-      let blocks = [ CodeBlock ("",["frost:git:devs"],[]) ""]
-      let pandoc = Pandoc nullMeta blocks
       -- when
       let res = run $ runGitPure ["Dev1", "Dev2"] $ substitute gitContributorsPlugin ""
       -- then
