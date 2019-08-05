@@ -23,7 +23,7 @@ main =  generate >>= handleErrors
       & runInputPandoc
       & runOutputPandoc
       & runFileProviderIO
-      & runSys
+      & runSysIO
       & runGitIO
       & runTraceIO
       & runError @DynamicError
