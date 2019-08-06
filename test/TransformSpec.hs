@@ -1,6 +1,7 @@
 module TransformSpec where
 
 import Frost
+import FrostError
 import Frost.Plugin
 
 import Text.Pandoc
