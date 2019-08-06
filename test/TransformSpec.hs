@@ -5,6 +5,7 @@ import FrostError
 import Frost.Plugin
 
 import Text.Pandoc
+import Data.Map
 import Data.Function ((&))
 import Polysemy
 import Polysemy.Error
@@ -22,6 +23,9 @@ textPlugin text = justContentPlugin "text:insert" (\_ -> return [Plain [Str text
 
 doublePlugin ::  Plugin r
 doublePlugin= justContentPlugin "double" (\i -> return [Plain [Str $ show $ 2 * read i]])
+
+addEntryMetaPlugin :: String -> String -> Plugin r
+addEntryMetaPlugin key value = justMetaPlugin "meta:plugin" (\meta -> return $ Meta (insert key (MetaString value) ( unMeta meta) ) )
 
 spec :: Spec
 spec =
@@ -57,6 +61,16 @@ spec =
       -- then
       transformedBlocks `shouldBe` [ Plain [Str "hello world!"]
                                    , Plain [Str "4"]]
+
+    it "should modify a document with multiple meta plugins" $ do
+      -- given
+      let pandoc = Pandoc nullMeta [Null]
+      let plugs = [addEntryMetaPlugin "key1" "value1", addEntryMetaPlugin "key2" "value2"]
+      -- when
+      let Right(Pandoc transformedMeta _) =  run $ runError $ transform plugs pandoc
+      -- then
+      transformedMeta `shouldBe` Meta (fromList [("key1", MetaString("value1")),("key2", MetaString("value2"))])
+
     it "should stop with error if plugin not found for given frost block" $ do
       -- given
       let blocks = [CodeBlock ("",["frost:text:insert"],[]) ""]
