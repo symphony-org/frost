@@ -9,6 +9,7 @@ import Frost.DefaultsMandatoryPlugin
 import Frost.Effects.Git
 import Frost.Effects.Sys
 
+import Data.Foldable
 import Data.List (find)
 import Control.Monad
 import Polysemy
@@ -29,8 +30,7 @@ generateDocs  transform = input >>= transform >>= output
 
 transform :: Member (Error FrostError) r => [Plugin r] -> Pandoc -> Sem r Pandoc
 transform plugins (Pandoc meta blocks) = do
-  let plugin = (head plugins) -- TODO LOL, use all plugins, not one
-  newMeta <- addToMeta plugin meta
+  newMeta <- (foldM (\m -> \p -> (addToMeta p m)) meta plugins)
   newBlocks <- traverse (extractFrostBlocks plugins) blocks
   return $ Pandoc newMeta (join newBlocks)
 
