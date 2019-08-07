@@ -68,6 +68,32 @@ spec =
       transformedBlocks `shouldBe` [ Plain [Str "hello world!"]
                                    , Plain [Str "4"]]
 
+    it "should modify document with multiple plugins" $ do
+      -- given
+      let blocks = [Para [ Str "The"
+                              , Space
+                              , Str "value:"
+                              , Space
+                              , Code ("",[],[]) "frost:text:insert"
+                              , Space
+                              , Code ("",[],[]) "frost:double 5"
+                         ]
+                   ]
+      let pandoc = Pandoc nullMeta blocks
+      let plugs = [doublePlugin, textPlugin "hello world!"]
+      -- when
+      let Right(Pandoc _ transformedBlocks) =  run $ runError $ transform plugs pandoc
+      -- then
+      transformedBlocks `shouldBe` [Para [ Str "The"
+                                         , Space
+                                         , Str "value:"
+                                         , Space
+                                         , Str "hello world!"
+                                         , Space
+                                         , Str "10"
+                                         ]
+                                   ]
+
     it "should modify a document with multiple meta plugins" $ do
       -- given
       let pandoc = Pandoc nullMeta [Null]
