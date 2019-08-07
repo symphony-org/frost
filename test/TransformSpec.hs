@@ -14,15 +14,15 @@ import Test.Hspec
 
 purgePlugin :: Plugin r
 purgePlugin = Plugin { pluginName = "null"
-                     , substitute = \_ -> return []
+                     , substitute = \_ -> return ([], [])
                      , addToMeta = \m -> return nullMeta
                      }
 
 textPlugin :: String -> Plugin r
-textPlugin text = justContentPlugin "text:insert" (\_ -> return [Plain [Str text]])
+textPlugin text = justContentPlugin "text:insert" (\_ -> return ([Plain [Str text]], [Str text]))
 
 doublePlugin ::  Plugin r
-doublePlugin= justContentPlugin "double" (\i -> return [Plain [Str $ show $ 2 * read i]])
+doublePlugin= justContentPlugin "double" (\i -> return ([Plain [Str $ show $ 2 * read i]], [Str $ show $ 2 * read i]))
 
 addEntryMetaPlugin :: String -> String -> Plugin r
 addEntryMetaPlugin key value = justMetaPlugin "meta:plugin" (\meta -> return $ Meta (insert key (MetaString value) ( unMeta meta) ) )

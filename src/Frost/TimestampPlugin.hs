@@ -18,4 +18,4 @@ timestampMetaPlugin = justMetaPlugin "timestamp:meta" (\meta -> do
 timestampPlugin :: Member Sys r => Plugin r
 timestampPlugin = justContentPlugin "timestamp" (\_ -> currentTime <&> render)
   where
-    render t = [Plain [Str $show t]]
+    render t = ([Plain [Str $ show t]], [Str $ show t])
