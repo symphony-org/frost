@@ -27,6 +27,12 @@ doublePlugin= justContentPlugin "double" (\i -> return [Plain [Str $ show $ 2 * 
 addEntryMetaPlugin :: String -> String -> Plugin r
 addEntryMetaPlugin key value = justMetaPlugin "meta:plugin" (\meta -> return $ Meta (insert key (MetaString value) ( unMeta meta) ) )
 
+appendEntryMetaPlugin :: String -> String -> Plugin r
+appendEntryMetaPlugin key value = justMetaPlugin "meta:plugin" (\meta -> return $ Meta (insertWith (concat) key (MetaString value) ( unMeta meta) ) )
+  where
+    concat (MetaString m2) (MetaString m1) = MetaString(m1 ++ m2)
+
+
 spec :: Spec
 spec =
   describe "Frost.Plugins transform" $ do
@@ -70,6 +76,20 @@ spec =
       let Right(Pandoc transformedMeta _) =  run $ runError $ transform plugs pandoc
       -- then
       transformedMeta `shouldBe` Meta (fromList [("key1", MetaString("value1")),("key2", MetaString("value2"))])
+
+    it "should respect the order of execution of meta plugins" $ do
+      -- given
+      let pandoc = Pandoc nullMeta [Null]
+      let key = "key1"
+      let plugs = [
+            appendEntryMetaPlugin key "value1",
+            appendEntryMetaPlugin key "value2",
+            appendEntryMetaPlugin key "value3"
+            ]
+      -- when
+      let Right(Pandoc transformedMeta _) =  run $ runError $ transform plugs pandoc
+      -- then
+      transformedMeta `shouldBe` Meta (fromList [("key1", MetaString("value1value2value3"))])
 
     it "should stop with error if plugin not found for given frost block" $ do
       -- given
