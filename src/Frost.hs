@@ -9,7 +9,8 @@ import Frost.DefaultsMandatoryPlugin
 import Frost.Effects.Git
 import Frost.Effects.Sys
 
-import Data.Foldable
+import Data.Foldable (foldM)
+import Data.Functor ((<&>))
 import Data.List (find)
 import Control.Monad
 import Polysemy
@@ -40,12 +41,12 @@ transform plugins (Pandoc meta blocks) = do
         Para [Code ("",[],[]) name] -> do
           let maybePlugin = find (\p -> "frost:" ++ pluginName p == name) plugins
           case maybePlugin of
-            Just plugin ->  substitute plugin ""
+            Just plugin ->  substitute plugin "" <&> fst
             Nothing -> throw $ PluginNotAvailable name
         CodeBlock ("",[name],[]) content -> do
           let maybePlugin = find (\p -> "frost:" ++ pluginName p == name) plugins
           case maybePlugin of
-            Just plugin ->  substitute plugin content
+            Just plugin ->  substitute plugin content <&> fst
             Nothing -> throw $ PluginNotAvailable name
         otherwise -> return [otherwise])
 

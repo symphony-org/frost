@@ -19,4 +19,5 @@ spec =
             & runGitPure ["Dev1", "Dev2"]
             & run
       -- then
-      res `shouldBe` [BulletList [ [Plain [Str "Dev1"]], [Plain [Str "Dev2"]]]]
+      fst res `shouldBe` [BulletList [ [Plain [Str "Dev1"]], [Plain [Str "Dev2"]]]]
+      snd res `shouldBe` [Str "Dev1", Str "Dev2"]
