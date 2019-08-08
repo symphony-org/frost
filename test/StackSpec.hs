@@ -31,6 +31,11 @@ spec =
                  & runCmd ("stack --no-terminal test", "result of test")
                  & run
       result `shouldBe` "result of test"
+    it "testMatch should call stack --no-terminal test --match \"/<<filename>>/<<specname>>/<<testname>>/\"" $ do
+      let result = runStack (testMatch "boo" "foo" "bar")
+                 & runCmd ("stack --no-terminal test --match \"/boo/foo/bar/\"", "result of test")
+                 & run
+      result `shouldBe` "result of test"
 
 runCmd :: (String, String) -> Sem (Sys ': r) a -> Sem r a
 runCmd (arg, response) program = runSysPure ts func program
