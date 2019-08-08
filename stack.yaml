@@ -3,11 +3,4 @@ resolver: lts-14.0
 packages:
 - .
 
-extra-deps: [
-          aeson-1.4.3.0,
-          first-class-families-0.5.0.0,
-          loopbreaker-0.1.1.0,
-          th-abstraction-0.3.1.0,
-          type-errors-0.2.0.0,
-          unagi-chan-0.4.1.0,
-            ]
+extra-deps: []
