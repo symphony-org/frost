@@ -14,7 +14,7 @@ import System.Exit ( ExitCode ( .. ) )
 data Sys m a where
   CurrentTime :: Sys m UTCTime
   Cmd :: String -> Sys m (String, String)
-  
+
 makeSem ''Sys
 
 runSysPure :: UTCTime -> (String -> (String, String)) -> Sem (Sys ': r) a -> Sem r a
@@ -22,16 +22,16 @@ runSysPure ct cmdFun = interpret $ \case
   CurrentTime -> return ct
   Cmd command -> return $ cmdFun command
 
-runSysIO :: ( Member (Lift IO) r
+runSysIO :: ( Member (Embed IO) r
           , Member (Error FrostError) r
           ) => Sem (Sys ': r) a -> Sem r a
 runSysIO = interpret $ \case
-  CurrentTime -> sendM getCurrentTime
+  CurrentTime -> embed getCurrentTime
   Cmd command -> executeCommand command >>= \case
     Left error -> throw error
     Right output -> return output
   where
-    executeCommand command = sendM (getProcessOutput command <&> \case
+    executeCommand command = embed (getProcessOutput command <&> \case
       (_, _, (ExitFailure i)) -> Left $ ExitedWithFailure i
       (stdOut, stdErr, ExitSuccess) -> Right (stdOut, stdErr))
 
@@ -42,4 +42,3 @@ getProcessOutput command =
      stdOut   <- hGetContents pOut
      stdErr   <- hGetContents pErr
      return (stdOut, stdErr, exitCode)
-

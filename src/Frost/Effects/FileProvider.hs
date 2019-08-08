@@ -25,10 +25,7 @@ runFileProviderPure = interpret $ \case
     m <- get @InMemFileSystem
     put $ insert path content m
 
-runFileProviderIO :: (Member (Lift IO) r) => Sem (FileProvider ': r) a -> Sem r a
+runFileProviderIO :: (Member (Embed IO) r) => Sem (FileProvider ': r) a -> Sem r a
 runFileProviderIO = interpret $ \case
-  ReadFile path -> sendM $ TIO.readFile path
-  WriteFile path content -> sendM $ TIO.writeFile path content
-
-
-  
+  ReadFile path -> embed $ TIO.readFile path
+  WriteFile path content -> embed $ TIO.writeFile path content
