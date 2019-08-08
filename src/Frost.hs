@@ -40,22 +40,22 @@ transform plugins (Pandoc meta blocks) = do
     replaceBlock :: Member (Error FrostError) r => [Plugin r] -> Block -> Sem r [Block]
     replaceBlock plugins = (\case
         Para inlines -> traverse (replaceInline plugins) inlines >>= (pure . pure . Para . join)
-        CodeBlock ("",[name],[]) content -> do
-          let maybePlugin = find (\p -> "frost:" ++ pluginName p == name) plugins
-          case maybePlugin of
-            Just plugin ->  substitute plugin content <&> fst
-            Nothing -> throw $ PluginNotAvailable name
+        CodeBlock ("",[name],[]) content -> replace plugins name content <&> fst
         otherwise -> return [otherwise])
 
     replaceInline :: Member (Error FrostError) r => [Plugin r] -> Inline -> Sem r [Inline]
     replaceInline plugins (Code ("",[],[]) nameAndContent) = do
       let (name:contents) = split " " nameAndContent
       let content = join contents
+      replace plugins name content <&> snd
+    replaceInline plugins otherwise = return [otherwise]
+
+    replace :: Member (Error FrostError) r => [Plugin r] -> String -> String -> Sem r ([Block], [Inline])
+    replace plugins name content = do
       let maybePlugin = find (\p -> "frost:" ++ pluginName p == name) plugins
       case maybePlugin of
-        Just plugin ->  substitute plugin content <&> snd
+        Just plugin ->  substitute plugin content
         Nothing -> throw $ PluginNotAvailable name
-    replaceInline plugins otherwise = return [otherwise]
       
 plugins :: (Member Sys r, Member Git r) => [Plugin r]
 plugins = [ timestampPlugin
