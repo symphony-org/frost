@@ -25,7 +25,7 @@ main =  generate >>= handleErrors
       & runFileProviderIO
       & runSysIO
       & runGitIO
-      & runTraceIO
+      & traceToIO
       & runError @FrostError
       & runError @PandocError
       & runM

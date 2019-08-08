@@ -11,7 +11,7 @@ import Polysemy.Error
 import PolysemyContrib
 
 runInputPandoc :: (
-    Member (Lift IO) r
+    Member (Embed IO) r
   , Member FileProvider r
   , Member (Error PandocError) r
   ) => Sem (Input Pandoc ': r) a -> Sem r a
@@ -23,7 +23,7 @@ runInputPandoc = interpret $ \case
     settings = def { readerExtensions = extensionsFromList [Ext_yaml_metadata_block, Ext_backtick_code_blocks]}
 
 runOutputPandoc :: (
-    Member (Lift IO) r
+    Member (Embed IO) r
   , Member FileProvider r
   , Member (Error PandocError) r
   ) => Sem (Output Pandoc ': r) a -> Sem r a
@@ -35,6 +35,6 @@ runOutputPandoc = interpret $ \case
 fromPandocIO :: (
     PandocMonad PandocIO
   , Member (Error PandocError) r
-  , Member (Lift IO) r
+  , Member (Embed IO) r
   ) => PandocIO a -> Sem r a
-fromPandocIO pioa = fromEitherSem $ sendM $ runIO pioa
+fromPandocIO pioa = fromEitherSem $ embed $ runIO pioa
