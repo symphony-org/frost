@@ -3,4 +3,10 @@ resolver: lts-14.0
 packages:
 - .
 
-extra-deps: []
+extra-deps: [
+            # this needs to be done better
+          github-0.22,
+          binary-instances-1,
+          binary-orphans-1.0.1,
+          time-compat-1.9.2.2,
+]
