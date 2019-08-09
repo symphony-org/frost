@@ -10,6 +10,7 @@ import Frost.Effects.Git
 import Frost.Effects.Sys
 
 import Data.Foldable
+import Data.Function.Contravariant.Syntax
 import Data.Functor ((<&>))
 import Data.List (find)
 import Data.List.Utils (split)
@@ -52,11 +53,11 @@ transform plugins (Pandoc meta blocks) = do
 
     replace :: Member (Error FrostError) r => [Plugin r] -> String -> String -> Sem r ([Block], [Inline])
     replace plugins name content = do
-      let maybePlugin = find (\p -> "frost:" ++ pluginName p == name) plugins
+      let maybePlugin = find (pluginName -. ("frost:" ++) -. (== name)) plugins
       case maybePlugin of
         Just plugin ->  substitute plugin content
         Nothing -> throw $ PluginNotAvailable name
-      
+
 plugins :: (Member Sys r, Member Git r) => [Plugin r]
 plugins = [ timestampPlugin
           , timestampMetaPlugin
