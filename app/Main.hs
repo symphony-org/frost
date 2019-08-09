@@ -1,5 +1,6 @@
 module Main where
 
+import App
 import Frost
 import FrostError
 import Frost.PandocRun (runInputPandoc, runOutputPandoc)
@@ -16,17 +17,8 @@ import Polysemy.Error
 import Polysemy.Trace
 import PolysemyContrib
 
+
 main :: IO ()
-main =  generate >>= handleErrors
+main =  mainString "documentation.md" >>= handleErrors
   where
-    generate =  generateDocs (transform plugins)
-      & runInputPandoc
-      & runOutputPandoc
-      & runFileProviderIO
-      & runSysIO
-      & runGitIO
-      & traceToIO
-      & runError @FrostError
-      & runError @PandocError
-      & runM
     handleErrors = either (die.show) (either (die.show) (\_ -> exitSuccess))

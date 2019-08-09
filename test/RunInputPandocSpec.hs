@@ -4,7 +4,7 @@ module RunInputPandocSpec where
 import Frost.PandocRun
 import Frost.Effects.FileProvider
 
-import Polysemy
+import Polysemy hiding (raise)
 import Polysemy.Input
 import Polysemy.Error
 import Polysemy.State
@@ -19,12 +19,15 @@ import Test.Hspec
 
 fetch :: String -> IO (Either PandocError Pandoc)
 fetch content = do
-  res <- runInputPandoc input
+  res <- runInputPandoc "documentation.md" input
     & runFileProviderPure
     & runState (singleton "documentation.md" (T.pack content))
     & runError
     & runM
   return $ fmap snd res
+
+raise :: IO (Either PandocError Pandoc)
+raise = return $ Left (PandocParseError "Couldn't parse it :-(")
 
 pluginAsCodeBlock = [r|
 ```frost:plugin
@@ -36,7 +39,7 @@ pluginAsCodeBlockWithContent = [r|
 some content here
 ```
 |]
-  
+
 pluginInlined = [r|
 `frost:plugin`
 |]
@@ -73,3 +76,7 @@ spec =
                               , Str "..."
                               , Space
                               , Str "wow!"]]
+
+    it "with error" $ do
+      Left(PandocParseError errorReason) <- raise
+      errorReason `shouldBe` "Couldn't parse it :-("

@@ -14,10 +14,10 @@ runInputPandoc :: (
     Member (Embed IO) r
   , Member FileProvider r
   , Member (Error PandocError) r
-  ) => Sem (Input Pandoc ': r) a -> Sem r a
-runInputPandoc = interpret $ \case
+  ) => String -> Sem (Input Pandoc ': r) a -> Sem r a
+runInputPandoc filePath = interpret $ \case
   Input -> do
-    content <- readFile "documentation.md"
+    content <- readFile filePath
     fromPandocIO $ readMarkdown settings content
   where
     settings = def { readerExtensions = extensionsFromList [Ext_yaml_metadata_block, Ext_backtick_code_blocks]}
