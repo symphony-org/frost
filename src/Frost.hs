@@ -32,7 +32,7 @@ generateDocs  transform = input >>= transform >>= output
 
 transform :: Member (Error FrostError) r => [Plugin r] -> Pandoc -> Sem r Pandoc
 transform plugins (Pandoc meta blocks) = do
-  newMeta <- (foldM (\m -> \p -> (addToMeta p m)) meta plugins)
+  newMeta <- (foldM (flip addToMeta) meta plugins)
   newBlocks <- traverse (replaceBlock plugins) blocks
   return $ Pandoc newMeta (join newBlocks)
 
