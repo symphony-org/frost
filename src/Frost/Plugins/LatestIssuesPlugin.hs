@@ -7,15 +7,17 @@ import Polysemy
 import PolysemyContrib
 import Data.Map.Strict
 import Frost.Effects.Github
+import Data.List
 
 latestIssuesPlugin :: (Member Github r) => Plugin r
-latestIssuesPlugin = Plugin "issues:latest" bl return
+latestIssuesPlugin = justContentPlugin "issues:latest" bl
   where
-    bl :: (Member Github r) => String -> Sem r [Block]
+    bl :: (Member Github r) => String -> Sem r ([Block], [Inline])
     bl _ = do
       is <- issues
-      render is
+      return $ (renderBlock is, renderInline is)
 
-    render is = return $ [BulletList [(fmap (Plain . wrap . Str . show) is)]]
+    renderBlock is = [BulletList [(fmap (Plain . wrap . Str . show) is)]]
+    renderInline is = [Str $ intercalate ", " $ fmap show is]
     wrap :: c -> [c]
     wrap = return
