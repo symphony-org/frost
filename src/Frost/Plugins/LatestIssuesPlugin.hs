@@ -10,13 +10,10 @@ import Frost.Effects.Github
 import Data.List
 
 latestIssuesPlugin :: (Member Github r) => Plugin r
-latestIssuesPlugin = justContentPlugin "issues:latest" bl
+latestIssuesPlugin = justContentPlugin "issues:latest" (\repo -> do
+      is <- issues repo
+      return $ (renderBlock is, renderInline is))
   where
-    bl :: (Member Github r) => String -> Sem r ([Block], [Inline])
-    bl _ = do
-      is <- issues
-      return $ (renderBlock is, renderInline is)
-
     renderBlock is = [BulletList [(fmap (Plain . wrap . Str . show) is)]]
     renderInline is = [Str $ intercalate ", " $ fmap show is]
     wrap :: c -> [c]

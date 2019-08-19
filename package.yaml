@@ -44,6 +44,7 @@ dependencies:
 - binary-instances
 - github
 - vector
+- split
 
 library:
   source-dirs: src
