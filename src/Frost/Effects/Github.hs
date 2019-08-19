@@ -8,26 +8,32 @@ import FrostError
 import qualified GitHub.Endpoints.Issues as GHI
 import qualified GitHub.Data.Options as GHO
 import qualified GitHub.Data.Issues as GHDI
+import qualified GitHub.Internal.Prelude as GIP
 import PolysemyContrib
 import qualified Data.Vector as DV
+import qualified Data.List.Split as DLS
 
 type Issue = String
 
 data Github m a where
-  Issues :: Github m [Issue]
+  Issues :: String -> Github m [Issue]
 
 makeSem ''Github
 
 runGithubPure :: [Issue] -> Sem (Github ': r) a -> Sem r a
 runGithubPure issues = interpret $ \case
-  Issues -> return issues
+  Issues _ -> return issues
 
 runGithubIO :: (Member (Embed IO) r, Member (Error FrostError) r) => Sem (Github ': r) a  -> Sem r a
 runGithubIO = interpret $ \case
-  Issues -> fromEitherSem $ embed $ issuesForFrost
+  Issues repo -> do
+    (username, reponame) <- either throw return (parseRepo repo)
+    fromEitherSem $ embed $ issuesForFrost username reponame
   where
-    -- issuesForFrost :: IO (Either FrostError [Issue]) -- IO (Either Error (Vector Issue))
-    issuesForFrost = do
-      mis <- GHI.issuesForRepo "rabbitonweb" "frost" GHO.optionsAnyMilestone
-      return $ either (\e -> Left $ FrostError $ show e) (\l -> Right $ fmap (\i -> show $ GHDI.issueTitle i) (DV.toList l) ) mis
-
+    issuesForFrost username reponame = do
+      mis <- GHI.issuesForRepo username reponame GHO.optionsAnyMilestone
+      return $ either (Left . FrostError . show) (Right . fmap (show . GHDI.issueTitle) . DV.toList) mis
+    parseRepo :: String -> Either FrostError (GHI.Name GHI.Owner, GHI.Name GHI.Repo)
+    parseRepo d = case DLS.splitOn "/" d of
+        username : reponame : [] -> Right (GHI.mkOwnerName $ GIP.pack username, GHI.mkRepoName $ GIP.pack reponame)
+        other -> Left $ FrostError $ show other
