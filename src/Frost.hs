@@ -53,7 +53,7 @@ transform plugins (Pandoc meta blocks) = do
 
     replace :: Member (Error FrostError) r => [Plugin r] -> String -> String -> Sem r ([Block], [Inline])
     replace plugins name content = do
-      let maybePlugin = find (pluginName -. ("frost:" ++) -. (== name)) plugins
+      let maybePlugin = find ((name ==) . ("frost:" ++) . pluginName) plugins
       case maybePlugin of
         Just plugin ->  substitute plugin content
         Nothing -> throw $ PluginNotAvailable name
