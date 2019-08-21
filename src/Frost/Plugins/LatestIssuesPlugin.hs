@@ -14,7 +14,7 @@ latestIssuesPlugin = justContentPlugin "issues:latest" (\repo -> do
       is <- issues repo
       return $ (renderBlock is, renderInline is))
   where
-    renderBlock is = [BulletList [(fmap (Plain . wrap . Str . show) is)]]
-    renderInline is = [Str $ intercalate ", " $ fmap show is]
+    renderBlock is = [BulletList (fmap (wrap . Plain . wrap . Str) is)]
+    renderInline is = fmap Str is
     wrap :: c -> [c]
     wrap = return
