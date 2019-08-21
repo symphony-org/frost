@@ -10,7 +10,6 @@ import Frost.Effects.Git
 import Frost.Effects.Sys
 
 import Data.Foldable
-import Data.Function.Contravariant.Syntax
 import Data.Functor ((<&>))
 import Data.List (find)
 import Data.List.Utils (split)
