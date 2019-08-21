@@ -32,7 +32,7 @@ runGithubIO = interpret $ \case
   where
     issuesForFrost username reponame = do
       mis <- GHI.issuesForRepo username reponame GHO.optionsAnyMilestone
-      return $ either (Left . FrostError . show) (Right . fmap (show . GHDI.issueTitle) . DV.toList) mis
+      return $ either (Left . FrostError . show) (Right . fmap (GIP.unpack . GHDI.issueTitle) . DV.toList) mis
     parseRepo :: String -> Either FrostError (GHI.Name GHI.Owner, GHI.Name GHI.Repo)
     parseRepo d = case DLS.splitOn "/" d of
         username : reponame : [] -> Right (GHI.mkOwnerName $ GIP.pack username, GHI.mkRepoName $ GIP.pack reponame)
