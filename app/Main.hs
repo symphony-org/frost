@@ -7,6 +7,7 @@ import Frost.Effects.FileProvider
 import Frost.Effects.Git
 import Frost.Effects.Python
 import Frost.Effects.Sys
+import Frost.Effects.Stack
 
 import Data.Function ((&))
 import qualified Data.Text as T
@@ -25,6 +26,7 @@ main =  generate >>= handleErrors
       & runOutputPandoc
       & runFileProviderIO
       & runPython
+      & runStackSys
       & runSysIO
       & runGitIO
       & traceToIO
