@@ -20,15 +20,21 @@ data Stack m a where
 
 makeSem ''Stack
 
-runStack :: Member Sys r => Sem (Stack ': r) a -> Sem r a
-runStack = interpret $ \case
-  Clean                       -> stack "clean"
-  Build                       -> stack "build"
-  Exec what                   -> stack $ "exec " ++ what
-  Test                        -> stack "test"
+runStackSys :: Member Sys r => Sem (Stack ': r) a -> Sem r a
+runStackSys = interpret $ \case
+  Clean                       -> showStdErr $ stack "clean"
+  Build                       -> showStdErr $ stack "build"
+  Exec what                   -> showStdErr $ stack $ "exec " ++ what
+  Test                        -> showStdOut $ stack "test"
   TestMatch fileName specName testName -> do
     let pattern = "/"++ fileName ++ "/" ++ specName ++ "/" ++ testName ++ "/"
-    stack $ "test --match " ++ (show pattern)
+    showStdOut $ stack $ "test --match " ++ (show pattern)
   where
-    stack :: Member Sys r => String -> Sem r String
-    stack arg = fmap snd (cmd $ "stack --no-terminal " ++ arg)
+    stack :: Member Sys r => String -> Sem r (String, String)
+    stack arg = cmd $ "stack --no-terminal " ++ arg
+
+    showStdOut :: Sem r (String, String) -> Sem r String
+    showStdOut = fmap fst
+
+    showStdErr :: Sem r (String, String) -> Sem r String
+    showStdErr = fmap snd
