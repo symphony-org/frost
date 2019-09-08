@@ -5,6 +5,7 @@ import FrostError
 import Frost.PandocRun (runInputPandoc, runOutputPandoc)
 import Frost.Effects.FileProvider
 import Frost.Effects.Git
+import Frost.Effects.Python
 import Frost.Effects.Sys
 
 import Data.Function ((&))
@@ -23,6 +24,7 @@ main =  generate >>= handleErrors
       & runInputPandoc
       & runOutputPandoc
       & runFileProviderIO
+      & runPython
       & runSysIO
       & runGitIO
       & traceToIO

@@ -3,10 +3,12 @@ module Frost where
 
 import FrostError
 import Frost.Plugin
+import Frost.PythonPlugin
 import Frost.GitContributorsPlugin
 import Frost.TimestampPlugin
 import Frost.DefaultsMandatoryPlugin
 import Frost.Effects.Git
+import Frost.Effects.Python
 import Frost.Effects.Sys
 
 import Data.Foldable
@@ -57,9 +59,10 @@ transform plugins (Pandoc meta blocks) = do
         Just plugin ->  substitute plugin content
         Nothing -> throw $ PluginNotAvailable name
 
-plugins :: (Member Sys r, Member Git r) => [Plugin r]
+plugins :: Members [Git, Python, Sys] r  => [Plugin r]
 plugins = [ timestampPlugin
           , timestampMetaPlugin
           , defaultsMandatoryPlugin
           , gitContributorsPlugin
+          , pythonPlugin
           ]
