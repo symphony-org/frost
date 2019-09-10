@@ -12,6 +12,6 @@ makeSem ''Python
 runPython :: Member Sys r => Sem (Python ': r) a -> Sem r a
 runPython = interpret $ \case
   Exec script -> showStdOut (cmd $ "python -c '" ++ script ++ "'")
-
-showStdOut :: Sem r (String, String) -> Sem r String
-showStdOut = fmap fst
+  where
+    showStdOut :: Sem r (String, String) -> Sem r String
+    showStdOut = fmap fst
