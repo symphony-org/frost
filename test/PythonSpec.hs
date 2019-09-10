@@ -18,11 +18,10 @@ spec =
                  & run
       result `shouldBe` "executed a python script"
 
-runCmd :: (String, (String, String)) -> Sem (Sys ': r) a -> Sem r a
+runCmd :: (String, (StdOut, StdErr)) -> Sem (Sys ': r) a -> Sem r a
 runCmd (arg, response) program = runSysPure ts func program
   where
     ts = undefined
     func str = if str == arg then response else ("", "")
-
-withStdOut :: String -> (String, String)
-withStdOut = (, "")
+    withStdOut :: String -> (StdOut, StdErr)
+    withStdOut = (, "")

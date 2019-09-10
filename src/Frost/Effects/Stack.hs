@@ -30,11 +30,11 @@ runStackSys = interpret $ \case
     let pattern = "/"++ fileName ++ "/" ++ specName ++ "/" ++ testName ++ "/"
     showStdOut $ stack $ "test --match " ++ (show pattern)
   where
-    stack :: Member Sys r => String -> Sem r (String, String)
+    stack :: Member Sys r => String -> Sem r (StdOut, StdErr)
     stack arg = cmd $ "stack --no-terminal " ++ arg
 
-    showStdOut :: Sem r (String, String) -> Sem r String
+    showStdOut :: Sem r (StdOut, StdErr) -> Sem r StdOut
     showStdOut = fmap fst
 
-    showStdErr :: Sem r (String, String) -> Sem r String
+    showStdErr :: Sem r (StdOut, StdErr) -> Sem r StdErr
     showStdErr = fmap snd

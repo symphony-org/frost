@@ -11,13 +11,16 @@ import System.IO ( hGetContents )
 import System.Process ( runInteractiveCommand , waitForProcess)
 import System.Exit ( ExitCode ( .. ) )
 
+type StdOut = String
+type StdErr = String
+
 data Sys m a where
   CurrentTime :: Sys m UTCTime
-  Cmd :: String -> Sys m (String, String)
+  Cmd :: String -> Sys m (StdOut, StdErr)
 
 makeSem ''Sys
 
-runSysPure :: UTCTime -> (String -> (String, String)) -> Sem (Sys ': r) a -> Sem r a
+runSysPure :: UTCTime -> (String -> (StdOut, StdErr)) -> Sem (Sys ': r) a -> Sem r a
 runSysPure ct cmdFun = interpret $ \case
   CurrentTime -> return ct
   Cmd command -> return $ cmdFun command
@@ -35,7 +38,7 @@ runSysIO = interpret $ \case
       (_, _, (ExitFailure i)) -> Left $ ExitedWithFailure i
       (stdOut, stdErr, ExitSuccess) -> Right (stdOut, stdErr))
 
-getProcessOutput :: String -> IO (String, String,  ExitCode)
+getProcessOutput :: String -> IO (StdOut, StdErr, ExitCode)
 getProcessOutput command =
   do (_pIn, pOut, pErr, handle) <- runInteractiveCommand command
      exitCode <- waitForProcess handle
