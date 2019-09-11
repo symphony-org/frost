@@ -23,5 +23,6 @@ runCmd (arg, response) program = runSysPure ts func program
   where
     ts = undefined
     func str = if str == arg then response else ("", "")
-    withStdOut :: String -> (StdOut, StdErr)
-    withStdOut = (, "")
+
+withStdOut :: String -> (StdOut, StdErr)
+withStdOut = (, "")
