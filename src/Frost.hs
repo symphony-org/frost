@@ -8,8 +8,10 @@ import Frost.GitContributorsPlugin
 import Frost.TimestampPlugin
 import Frost.DefaultsMandatoryPlugin
 import Frost.Plugins.StackPlugins
+import Frost.Plugins.RholangPlugin
 import Frost.Effects.Git
 import Frost.Effects.Python
+import Frost.Effects.Rholang
 import Frost.Effects.Sys
 import Frost.Effects.Stack
 
@@ -61,10 +63,11 @@ transform plugins (Pandoc meta blocks) = do
         Just plugin ->  substitute plugin content
         Nothing -> throw $ PluginNotAvailable name
 
-plugins :: Members [Git, Python, Sys, Stack] r  => [Plugin r]
+plugins :: Members [Git, Python, Rholang, Sys, Stack] r  => [Plugin r]
 plugins = [ timestampPlugin
           , timestampMetaPlugin
           , defaultsMandatoryPlugin
           , gitContributorsPlugin
           , pythonPlugin
+          , rholangPlugin
           ] ++ stackPlugins
