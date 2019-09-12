@@ -1,0 +1,4 @@
+#!/bin/sh
+java -jar $HOME/rholangCLI.jar <<EOF
+$1
+EOF
