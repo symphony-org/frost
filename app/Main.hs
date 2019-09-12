@@ -6,6 +6,7 @@ import Frost.PandocRun (runInputPandoc, runOutputPandoc)
 import Frost.Effects.FileProvider
 import Frost.Effects.Git
 import Frost.Effects.Python
+import Frost.Effects.Rholang
 import Frost.Effects.Sys
 import Frost.Effects.Stack
 
@@ -26,6 +27,7 @@ main =  generate >>= handleErrors
       & runOutputPandoc
       & runFileProviderIO
       & runPython
+      & runRholang
       & runStackSys
       & runSysIO
       & runGitIO
