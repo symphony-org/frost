@@ -19,7 +19,7 @@ import Test.Hspec
 
 fetch :: String -> IO (Either PandocError Pandoc)
 fetch content = do
-  res <- runInputPandoc input
+  res <- runInputPandoc "documentation.md" input
     & runFileProviderPure
     & runState (singleton "documentation.md" (T.pack content))
     & runError
@@ -36,7 +36,7 @@ pluginAsCodeBlockWithContent = [r|
 some content here
 ```
 |]
-  
+
 pluginInlined = [r|
 `frost:plugin`
 |]
