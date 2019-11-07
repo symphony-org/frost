@@ -13,6 +13,7 @@ import Frost.Effects.Stack
 import Data.Function ((&))
 import qualified Data.Text as T
 import System.Exit (die, exitSuccess)
+import System.Environment (getArgs)
 import Text.Pandoc (PandocError)
 import Polysemy
 import Polysemy.Error
@@ -20,11 +21,11 @@ import Polysemy.Trace
 import PolysemyContrib
 
 main :: IO ()
-main =  generate >>= handleErrors
+main = fmap head getArgs >>= generate >>= handleErrors
   where
-    generate =  generateDocs (transform plugins)
-      & runInputPandoc
-      & runOutputPandoc
+    generate filePath = generateDocs (transform plugins)
+      & runInputPandoc filePath
+      & runOutputPandoc filePath
       & runFileProviderIO
       & runPython
       & runRholang
