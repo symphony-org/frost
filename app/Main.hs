@@ -10,10 +10,12 @@ import Frost.Effects.Rholang
 import Frost.Effects.Sys
 import Frost.Effects.Stack
 
+import Data.Foldable (find)
 import Data.Function ((&))
 import qualified Data.Text as T
-import System.Exit (die, exitSuccess)
+import System.Exit
 import System.Environment (getArgs)
+import System.IO
 import Text.Pandoc (PandocError)
 import Polysemy
 import Polysemy.Error
@@ -21,8 +23,10 @@ import Polysemy.Trace
 import PolysemyContrib
 
 main :: IO ()
-main = fmap head getArgs >>= generate >>= handleErrors
+main = results >>= traverse handleEithers >>= exit
   where
+    exit = maybe exitSuccess (\_ -> exitFailure) . find (== ExitFailure 1)
+    results = getArgs >>= sequenceA . fmap generate
     generate filePath = generateDocs (transform plugins)
       & runInputPandoc filePath
       & runOutputPandoc filePath
@@ -36,4 +40,5 @@ main = fmap head getArgs >>= generate >>= handleErrors
       & runError @FrostError
       & runError @PandocError
       & runM
-    handleErrors = either (die.show) (either (die.show) (\_ -> exitSuccess))
+    handleEithers = either (handle) (either (handle) (\_ -> return ExitSuccess))
+    handle error = hPutStrLn stderr (show error) >> return (ExitFailure 1)
