@@ -12,6 +12,9 @@ TODO - obtaining from hackage
 ## Usage
 Running `frost examples/git.md` should create a `git.md.html` file in the `examples/` directory.
 
+## Development
+See [DEVELOPERS.md](DEVELOPERS.md)
+
 ## Plugin prerequisites
 
 ### Rholang
