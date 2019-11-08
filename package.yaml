@@ -1,10 +1,15 @@
 name:                frost
 version:             0.0.1.0
-github:              "githubuser/frost"
+synopsis:            Frost
+description:         |
+  Please see the documentation at <https://github.com/frost-org/frost/blob/master/README.md>
+  for usage information
+category:            Documentation
+github:              "frost-org/frost"
 license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2019 Author name here"
+author:              "Paweł Szulc"
+maintainer:          "paul.szulc@gmail.com"
+copyright:           "2019 Paweł Szulc"
 
 extra-source-files:
 - README.md
