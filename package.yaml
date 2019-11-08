@@ -50,7 +50,7 @@ library:
   source-dirs: src
 
 executables:
-  frost-exe:
+  frost:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
