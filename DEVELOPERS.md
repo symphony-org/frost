@@ -4,6 +4,8 @@
 We use [Stack](https://docs.haskellstack.org/en/stable/README/) for development.
 Simply cloning the repo and running `stack test` should be enough to start hacking on the project.
 
+[ghcid](https://github.com/ndmitchell/ghcid) is another useful tool. Just type `ghcid -c 'stack repl'` in the root dir and enjoy.
+
 ### Known problems
 Stack installed via `nix-env` is known to cause problems while building.
 
