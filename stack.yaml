@@ -10,3 +10,7 @@ extra-deps: [
           binary-orphans-1.0.1,
           time-compat-1.9.2.2,
 ]
+
+nix:
+  enable: true
+  packages: [ zlib ]
