@@ -32,6 +32,7 @@ before_install:
 - travis_retry curl -L https://get.haskellstack.org/stable/linux-x86_64.tar.gz | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
 # Install nix
 - curl https://nixos.org/nix/install | sh
+- source ~/.nix-profile/etc/profile.d/nix.sh
 
 install:
 # Build dependencies
