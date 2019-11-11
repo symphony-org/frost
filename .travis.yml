@@ -20,6 +20,7 @@ before_cache:
 
 cache:
   directories:
+  - $HOME/.stack
   - $HOME/nix.store
 
 before_install:
