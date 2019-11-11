@@ -16,7 +16,8 @@ nix: 2.3.1
 
 before_cache:
 - mkdir -p $HOME/nix.store
-- nix copy --to file://$HOME/nix.store -f shell.nix buildInputs
+## TODO: make this work
+# - nix copy --to file://$HOME/nix.store -f shell.nix buildInputs
 
 cache:
   directories:
