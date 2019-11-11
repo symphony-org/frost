@@ -13,6 +13,4 @@ extra-deps: [
 
 nix:
   enable: true
-  packages: [
-    zlib # needed by digest
-  ]
+  shell-file: shell.nix
