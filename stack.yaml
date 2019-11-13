@@ -13,4 +13,4 @@ extra-deps: [
 
 nix:
   enable: true
-  packages: [ zlib ]
+  packages: [ python3 zlib ]
