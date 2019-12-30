@@ -3,7 +3,7 @@
 ## Installation
 
 ### Via Stack
-Build the latest executable via `stack intall`.
+Build the latest executable via `stack install`.
 After stack has done it's job the executable should be availabe as `frost`
 
 ### From hackage
