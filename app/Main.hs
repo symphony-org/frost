@@ -40,5 +40,5 @@ main = results >>= traverse handleEithers >>= exit
       & runError @FrostError
       & runError @PandocError
       & runM
-    handleEithers = either (handle) (either (handle) (\_ -> return ExitSuccess))
+    handleEithers = either (handle) (either (handle) (const $ return ExitSuccess))
     handle error = hPutStrLn stderr (show error) >> return (ExitFailure 1)

@@ -3,7 +3,7 @@ module Frost.PandocRun where
 import Frost.Effects.FileProvider
 
 import Prelude hiding (readFile, writeFile)
-import Text.Pandoc hiding (trace)
+import Text.Pandoc
 import Polysemy
 import Polysemy.Input
 import Polysemy.Output

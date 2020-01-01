@@ -27,8 +27,8 @@ runStackSys = interpret $ \case
   Exec what                   -> showStdErr $ stack $ "exec " ++ what
   Test                        -> showStdOut $ stack "test"
   TestMatch fileName specName testName -> do
-    let pattern = "/"++ fileName ++ "/" ++ specName ++ "/" ++ testName ++ "/"
-    showStdOut $ stack $ "test --match " ++ (show pattern)
+    let p = "/"++ fileName ++ "/" ++ specName ++ "/" ++ testName ++ "/"
+    showStdOut $ stack $ "test --match " ++ show p
   where
     stack :: Member Sys r => String -> Sem r (StdOut, StdErr)
     stack arg = cmd $ "stack --no-terminal " ++ arg

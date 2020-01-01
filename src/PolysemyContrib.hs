@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+
 module PolysemyContrib where
 
 import Polysemy

@@ -11,7 +11,7 @@ import Data.Map.Strict
 timestampMetaPlugin :: Member Sys r => Plugin r
 timestampMetaPlugin = justMetaPlugin "timestamp:meta" (\meta -> do
   time <- currentTime
-  return $ Meta $ (insertTimestamp time) $ unMeta meta)
+  return $ Meta $ insertTimestamp time $ unMeta meta)
   where
     insertTimestamp t= insert "creation" (MetaString $ show t)
 

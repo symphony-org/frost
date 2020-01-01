@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+
 module Frost where
 
 import FrostError
@@ -24,10 +24,12 @@ import Polysemy
 import Polysemy.Input
 import Polysemy.Output
 import Polysemy.Error
-import Text.Pandoc hiding (trace)
+import Text.Pandoc
 import Text.Pandoc.Extensions
 import Data.Map.Strict hiding (split)
 import Data.Traversable
+
+{-# ANN module "HLint: ignore Used otherwise as a pattern" #-}
 
 generateDocs :: ( Member (Input Pandoc) r
                 , Member (Output Pandoc) r
@@ -38,16 +40,16 @@ generateDocs  transform = input >>= transform >>= output
 
 transform :: Member (Error FrostError) r => [Plugin r] -> Pandoc -> Sem r Pandoc
 transform plugins (Pandoc meta blocks) = do
-  newMeta <- (foldM (flip addToMeta) meta plugins)
+  newMeta <- foldM (flip addToMeta) meta plugins
   newBlocks <- traverse (replaceBlock plugins) blocks
   return $ Pandoc newMeta (join newBlocks)
 
   where
     replaceBlock :: Member (Error FrostError) r => [Plugin r] -> Block -> Sem r [Block]
-    replaceBlock plugins = (\case
-        Para inlines -> traverse (replaceInline plugins) inlines >>= (pure . pure . Para . join)
+    replaceBlock plugins = \case
+        Para inlines -> pure . Para . join <$> traverse (replaceInline plugins) inlines
         CodeBlock ("",[name],[]) content -> replace plugins name content <&> fst
-        otherwise -> return [otherwise])
+        otherwise -> return [otherwise]
 
     replaceInline :: Member (Error FrostError) r => [Plugin r] -> Inline -> Sem r [Inline]
     replaceInline plugins (Code ("",[],[]) nameAndContent) = do

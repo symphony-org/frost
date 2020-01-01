@@ -20,7 +20,7 @@ runFileProviderPure :: (Member (State InMemFileSystem) r) => Sem (FileProvider '
 runFileProviderPure = interpret $ \case
   ReadFile path -> do
     m <- get @InMemFileSystem
-    return $ m ! path
+    pure $ m ! path
   WriteFile path content -> do
     m <- get @InMemFileSystem
     put $ insert path content m

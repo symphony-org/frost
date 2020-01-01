@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+
 module Frost.Plugins.LatestIssuesPlugin where
 
 import Frost.Plugin
@@ -12,9 +12,9 @@ import Data.List
 latestIssuesPlugin :: (Member Github r) => Plugin r
 latestIssuesPlugin = justContentPlugin "issues:latest" (\repo -> do
       is <- issues repo
-      return $ (renderBlock is, renderInline is))
+      return (renderBlock is, renderInline is))
   where
     renderBlock is = [BulletList (fmap (wrap . Plain . wrap . Str) is)]
-    renderInline is = fmap Str is
+    renderInline = fmap Str
     wrap :: c -> [c]
     wrap = return

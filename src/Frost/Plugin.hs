@@ -13,4 +13,4 @@ justContentPlugin :: String -> (String -> Sem r ([Block], [Inline])) -> Plugin r
 justContentPlugin pluginName substitute = Plugin pluginName substitute return
 
 justMetaPlugin :: String -> (Meta -> Sem r Meta) -> Plugin r
-justMetaPlugin pluginName addToMeta = Plugin pluginName (\_ -> return ([], [])) addToMeta
+justMetaPlugin pluginName = Plugin pluginName (\_ -> return ([], []))

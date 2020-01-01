@@ -35,7 +35,7 @@ runSysIO = interpret $ \case
     Right output -> return output
   where
     executeCommand command = embed (getProcessOutput command <&> \case
-      (_, _, (ExitFailure i)) -> Left $ ExitedWithFailure i
+      (_, _, ExitFailure i) -> Left $ ExitedWithFailure i
       (stdOut, stdErr, ExitSuccess) -> Right (stdOut, stdErr))
 
 getProcessOutput :: String -> IO (StdOut, StdErr, ExitCode)

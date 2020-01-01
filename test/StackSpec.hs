@@ -39,7 +39,7 @@ spec =
       result `shouldBe` "result of test"
 
 runCmd :: (String, (StdOut, StdErr)) -> Sem (Sys ': r) a -> Sem r a
-runCmd (arg, response) program = runSysPure ts func program
+runCmd (arg, response) = runSysPure ts func
   where
     ts = undefined
     func str = if str == arg then response else ("", "")
@@ -49,4 +49,3 @@ withStdOut = (, "")
 
 withStdErr :: String -> (StdOut, StdErr)
 withStdErr = ("", )
-
