@@ -9,4 +9,4 @@ import Data.Map.Strict
 defaultsMandatoryPlugin :: Plugin r
 defaultsMandatoryPlugin = justMetaPlugin "meta.defaults" (return . Meta . insertTitle . unMeta)
   where
-    insertTitle = insert "title" (MetaString $ "Documentation")
+    insertTitle = insert "title" (MetaString "Documentation")

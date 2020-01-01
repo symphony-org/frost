@@ -10,6 +10,6 @@ import PolysemyContrib
 import Data.Map.Strict
 
 rholangPlugin :: Member Rholang r => Plugin r
-rholangPlugin = justContentPlugin "rholang" (\script -> render <$> exec script)
+rholangPlugin = justContentPlugin "rholang" (fmap render . exec)
   where
     render out = ([Plain [Str out]], [Str out])

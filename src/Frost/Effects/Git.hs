@@ -27,4 +27,4 @@ getContributors  = do
     let s = T.split (=='\n') (T.pack output)
     let r = nub $ filter (startswith  "Author:" . T.unpack) s
     let f = fmap (drop (length "Author: ") . T.unpack) r
-    return $ f
+    return f

@@ -10,6 +10,6 @@ import PolysemyContrib
 import Data.Map.Strict
 
 pythonPlugin :: Member Python r => Plugin r
-pythonPlugin = justContentPlugin "python" (\script -> render <$> exec script)
+pythonPlugin = justContentPlugin "python" (fmap render . exec)
   where
     render out = ([Plain [Str out]], [Str out])

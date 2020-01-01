@@ -12,6 +12,8 @@ import Polysemy.Error
 import qualified Data.Text as T
 import Test.Hspec
 
+{-# ANN module "HLint: ignore Reduce duplication" #-}
+
 purgePlugin :: Plugin r
 purgePlugin = Plugin { pluginName = "null"
                      , substitute = \_ -> return ([], [])
@@ -25,10 +27,10 @@ doublePlugin ::  Plugin r
 doublePlugin= justContentPlugin "double" (\i -> return ([Plain [Str $ show $ 2 * read i]], [Str $ show $ 2 * read i]))
 
 addEntryMetaPlugin :: String -> String -> Plugin r
-addEntryMetaPlugin key value = justMetaPlugin "meta:plugin" (\meta -> return $ Meta (insert key (MetaString value) ( unMeta meta) ) )
+addEntryMetaPlugin key value = justMetaPlugin "meta:plugin" (return . Meta . insert key (MetaString value) . unMeta )
 
 appendEntryMetaPlugin :: String -> String -> Plugin r
-appendEntryMetaPlugin key value = justMetaPlugin "meta:plugin" (\meta -> return $ Meta (insertWith (concat) key (MetaString value) ( unMeta meta) ) )
+appendEntryMetaPlugin key value = justMetaPlugin "meta:plugin" (return . Meta . insertWith concat key (MetaString value) . unMeta )
   where
     concat (MetaString m2) (MetaString m1) = MetaString(m1 ++ m2)
 
@@ -42,7 +44,7 @@ spec =
                    , Plain [Str "test"]]
       let pandoc = Pandoc nullMeta blocks
       -- when
-      let Right(transformed) =  run $ runError $ transform [purgePlugin] pandoc
+      let Right transformed =  run $ runError $ transform [purgePlugin] pandoc
       -- then
       transformed `shouldBe` pandoc
 
@@ -101,7 +103,7 @@ spec =
       -- when
       let Right(Pandoc transformedMeta _) =  run $ runError $ transform plugs pandoc
       -- then
-      transformedMeta `shouldBe` Meta (fromList [("key1", MetaString("value1")),("key2", MetaString("value2"))])
+      transformedMeta `shouldBe` Meta (fromList [("key1", MetaString"value1"),("key2", MetaString"value2")])
 
     it "should respect the order of execution of meta plugins" $ do
       -- given
@@ -115,7 +117,7 @@ spec =
       -- when
       let Right(Pandoc transformedMeta _) =  run $ runError $ transform plugs pandoc
       -- then
-      transformedMeta `shouldBe` Meta (fromList [("key1", MetaString("value1value2value3"))])
+      transformedMeta `shouldBe` Meta (fromList [("key1", MetaString"value1value2value3")])
 
     it "should stop with error if plugin not found for given frost block" $ do
       -- given
@@ -123,6 +125,6 @@ spec =
       let pandoc = Pandoc nullMeta blocks
       let plugs = [purgePlugin]
       -- when
-      let Left(error) =  run $ runError $ transform plugs pandoc
+      let Left error =  run $ runError $ transform plugs pandoc
       -- then
       error `shouldBe` PluginNotAvailable "frost:text:insert"

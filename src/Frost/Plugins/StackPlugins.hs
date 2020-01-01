@@ -9,7 +9,7 @@ stackPlugin :: (Member Stack r) => String -> Sem r String -> Plugin r
 stackPlugin pluginName stackCommand =
   justContentPlugin pluginName (\_ -> do
     output <- stackCommand
-    return $ (renderBlock output, []))
+    return (renderBlock output, []))
   where
     renderBlock output = [CodeBlock ("", [], []) output]
 

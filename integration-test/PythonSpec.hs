@@ -13,7 +13,7 @@ import Test.Hspec
 
 spec :: Spec
 spec =
-  describe "Frost.Effects.Python runPython" $ do
+  describe "Frost.Effects.Python runPython" $
     it "should execute python" $ do
       result <- runPython (exec "print(1+3)")
                 & runSysIO
