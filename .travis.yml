@@ -23,6 +23,7 @@ cache:
 
 before_install:
 - nix-env -i stack
+- nix-env -i hlint
 
 install:
 # Build dependencies
@@ -31,3 +32,4 @@ install:
 script:
 # Build the package, its tests, and its docs and run the tests
 - stack --no-terminal test
+- hlint --ignore "Parse error" .
