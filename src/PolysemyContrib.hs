@@ -1,4 +1,3 @@
-
 module PolysemyContrib where
 
 import Polysemy
