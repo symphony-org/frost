@@ -2,10 +2,10 @@ module Effects.GithubSpec where
 
 import qualified Frost.Effects.Github as FEG
 
-import Data.Function ((&))
-import Polysemy
-import Polysemy.Error
-import Test.Hspec
+import           Data.Function        ((&))
+import           Polysemy
+import           Polysemy.Error
+import           Test.Hspec
 
 spec :: Spec
 spec =

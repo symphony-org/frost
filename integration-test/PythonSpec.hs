@@ -1,15 +1,15 @@
 {-# LANGUAGE TupleSections #-}
 module PythonSpec where
 
-import Frost.Effects.Sys
-import Frost.Effects.Python
-import FrostError
+import           Frost.Effects.Python
+import           Frost.Effects.Sys
+import           FrostError
 
-import Polysemy
-import Polysemy.Error
+import           Polysemy
+import           Polysemy.Error
 
-import Data.Function               ((&))
-import Test.Hspec
+import           Data.Function        ((&))
+import           Test.Hspec
 
 spec :: Spec
 spec =

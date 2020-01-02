@@ -1,12 +1,12 @@
 module Frost.TimestampPlugin where
 
-import Frost.Plugin
-import Frost.Effects.Sys
+import           Frost.Effects.Sys
+import           Frost.Plugin
 
-import Data.Functor
-import Text.Pandoc
-import Polysemy
-import Data.Map.Strict
+import           Data.Functor
+import           Data.Map.Strict
+import           Polysemy
+import           Text.Pandoc
 
 timestampMetaPlugin :: Member Sys r => Plugin r
 timestampMetaPlugin = justMetaPlugin "timestamp:meta" (\meta -> do

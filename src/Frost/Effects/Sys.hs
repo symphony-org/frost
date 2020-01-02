@@ -1,15 +1,15 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Frost.Effects.Sys where
 
-import FrostError
+import           FrostError
 
-import Polysemy
-import Polysemy.Error
-import Data.Functor
-import Data.Time.Clock
-import System.IO ( hGetContents )
-import System.Process ( runInteractiveCommand , waitForProcess)
-import System.Exit ( ExitCode ( .. ) )
+import           Data.Functor
+import           Data.Time.Clock
+import           Polysemy
+import           Polysemy.Error
+import           System.Exit     (ExitCode (..))
+import           System.IO       (hGetContents)
+import           System.Process  (runInteractiveCommand, waitForProcess)
 
 type StdOut = String
 type StdErr = String

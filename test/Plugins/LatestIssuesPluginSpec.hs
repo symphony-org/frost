@@ -1,14 +1,14 @@
 module Plugins.LatestIssuesPluginSpec where
 
-import Frost
-import Frost.Plugin
-import Frost.Plugins.LatestIssuesPlugin
-import Frost.Effects.Github
+import           Frost
+import           Frost.Effects.Github
+import           Frost.Plugin
+import           Frost.Plugins.LatestIssuesPlugin
 
-import Data.Function               ((&))
-import Text.Pandoc
-import Polysemy
-import Test.Hspec
+import           Data.Function                    ((&))
+import           Polysemy
+import           Test.Hspec
+import           Text.Pandoc
 
 spec :: Spec
 spec =

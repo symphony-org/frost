@@ -1,14 +1,14 @@
 module GitContributorsPluginSpec where
 
-import Frost
-import Frost.Plugin
-import Frost.GitContributorsPlugin
-import Frost.Effects.Git
+import           Frost
+import           Frost.Effects.Git
+import           Frost.GitContributorsPlugin
+import           Frost.Plugin
 
-import Data.Function               ((&))
-import Text.Pandoc
-import Polysemy
-import Test.Hspec
+import           Data.Function               ((&))
+import           Polysemy
+import           Test.Hspec
+import           Text.Pandoc
 
 spec :: Spec
 spec =

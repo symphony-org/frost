@@ -1,33 +1,33 @@
 
 module Frost where
 
-import FrostError
-import Frost.Plugin
-import Frost.PythonPlugin
-import Frost.GitContributorsPlugin
-import Frost.TimestampPlugin
-import Frost.DefaultsMandatoryPlugin
-import Frost.Plugins.StackPlugins
-import Frost.Plugins.RholangPlugin
-import Frost.Effects.Git
-import Frost.Effects.Python
-import Frost.Effects.Rholang
-import Frost.Effects.Sys
-import Frost.Effects.Stack
+import           Frost.DefaultsMandatoryPlugin
+import           Frost.Effects.Git
+import           Frost.Effects.Python
+import           Frost.Effects.Rholang
+import           Frost.Effects.Stack
+import           Frost.Effects.Sys
+import           Frost.GitContributorsPlugin
+import           Frost.Plugin
+import           Frost.Plugins.RholangPlugin
+import           Frost.Plugins.StackPlugins
+import           Frost.PythonPlugin
+import           Frost.TimestampPlugin
+import           FrostError
 
-import Data.Foldable
-import Data.Functor ((<&>))
-import Data.List (find)
-import Data.List.Utils (split)
-import Control.Monad
-import Polysemy
-import Polysemy.Input
-import Polysemy.Output
-import Polysemy.Error
-import Text.Pandoc
-import Text.Pandoc.Extensions
-import Data.Map.Strict hiding (split)
-import Data.Traversable
+import           Control.Monad
+import           Data.Foldable
+import           Data.Functor                  ((<&>))
+import           Data.List                     (find)
+import           Data.List.Utils               (split)
+import           Data.Map.Strict               hiding (split)
+import           Data.Traversable
+import           Polysemy
+import           Polysemy.Error
+import           Polysemy.Input
+import           Polysemy.Output
+import           Text.Pandoc
+import           Text.Pandoc.Extensions
 
 {-# ANN module "HLint: ignore Used otherwise as a pattern" #-}
 
@@ -63,7 +63,7 @@ transform plugins (Pandoc meta blocks) = do
       let maybePlugin = find ((name ==) . ("frost:" ++) . pluginName) plugins
       case maybePlugin of
         Just plugin ->  substitute plugin content
-        Nothing -> throw $ PluginNotAvailable name
+        Nothing     -> throw $ PluginNotAvailable name
 
 plugins :: Members [Git, Python, Rholang, Sys, Stack] r  => [Plugin r]
 plugins = [ timestampPlugin

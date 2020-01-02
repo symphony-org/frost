@@ -1,13 +1,13 @@
 {-# LANGUAGE TupleSections #-}
 module StackSpec where
 
-import Frost.Effects.Sys
-import Frost.Effects.Stack
+import           Frost.Effects.Stack
+import           Frost.Effects.Sys
 
-import Polysemy
+import           Polysemy
 
-import Data.Function               ((&))
-import Test.Hspec
+import           Data.Function       ((&))
+import           Test.Hspec
 
 spec :: Spec
 spec =

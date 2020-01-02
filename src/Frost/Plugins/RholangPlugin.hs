@@ -1,13 +1,13 @@
 module Frost.Plugins.RholangPlugin where
 
-import Frost.Plugin
-import Frost.Effects.Sys
-import Frost.Effects.Rholang
+import           Frost.Effects.Rholang
+import           Frost.Effects.Sys
+import           Frost.Plugin
 
-import Text.Pandoc
-import Polysemy
-import PolysemyContrib
-import Data.Map.Strict
+import           Data.Map.Strict
+import           Polysemy
+import           PolysemyContrib
+import           Text.Pandoc
 
 rholangPlugin :: Member Rholang r => Plugin r
 rholangPlugin = justContentPlugin "rholang" (fmap render . exec)

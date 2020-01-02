@@ -1,14 +1,14 @@
 module Frost.PandocRun where
 
-import Frost.Effects.FileProvider
+import           Frost.Effects.FileProvider
 
-import Prelude hiding (readFile, writeFile)
-import Text.Pandoc
-import Polysemy
-import Polysemy.Input
-import Polysemy.Output
-import Polysemy.Error
-import PolysemyContrib
+import           Polysemy
+import           Polysemy.Error
+import           Polysemy.Input
+import           Polysemy.Output
+import           PolysemyContrib
+import           Prelude                    hiding (readFile, writeFile)
+import           Text.Pandoc
 
 runInputPandoc :: (
     Member (Embed IO) r

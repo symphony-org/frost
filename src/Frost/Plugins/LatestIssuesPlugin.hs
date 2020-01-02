@@ -1,13 +1,13 @@
 
 module Frost.Plugins.LatestIssuesPlugin where
 
-import Frost.Plugin
-import Text.Pandoc
-import Polysemy
-import PolysemyContrib
-import Data.Map.Strict
-import Frost.Effects.Github
-import Data.List
+import           Data.List
+import           Data.Map.Strict
+import           Frost.Effects.Github
+import           Frost.Plugin
+import           Polysemy
+import           PolysemyContrib
+import           Text.Pandoc
 
 latestIssuesPlugin :: (Member Github r) => Plugin r
 latestIssuesPlugin = justContentPlugin "issues:latest" (\repo -> do

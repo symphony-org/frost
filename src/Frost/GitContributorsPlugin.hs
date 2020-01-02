@@ -1,12 +1,12 @@
 module Frost.GitContributorsPlugin where
 
-import Frost.Plugin
-import Frost.Effects.Git
+import           Frost.Effects.Git
+import           Frost.Plugin
 
-import Text.Pandoc
-import Polysemy
-import PolysemyContrib
-import Data.Map.Strict
+import           Data.Map.Strict
+import           Polysemy
+import           PolysemyContrib
+import           Text.Pandoc
 
 gitContributorsPlugin :: Member Git r => Plugin r
 gitContributorsPlugin = justContentPlugin "git:devs" (\_ -> render <$> devsList)

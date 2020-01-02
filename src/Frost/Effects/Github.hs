@@ -1,17 +1,17 @@
-{-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TemplateHaskell   #-}
 module Frost.Effects.Github where
 
-import Polysemy
-import Polysemy.Error
-import FrostError
+import qualified Data.List.Split         as DLS
+import qualified Data.Vector             as DV
+import           FrostError
+import qualified GitHub.Data.Issues      as GHDI
+import qualified GitHub.Data.Options     as GHO
 import qualified GitHub.Endpoints.Issues as GHI
-import qualified GitHub.Data.Options as GHO
-import qualified GitHub.Data.Issues as GHDI
 import qualified GitHub.Internal.Prelude as GIP
-import PolysemyContrib
-import qualified Data.Vector as DV
-import qualified Data.List.Split as DLS
+import           Polysemy
+import           Polysemy.Error
+import           PolysemyContrib
 
 type Issue = String
 

@@ -1,16 +1,16 @@
 module TransformSpec where
 
-import Frost
-import FrostError
-import Frost.Plugin
+import           Frost
+import           Frost.Plugin
+import           FrostError
 
-import Text.Pandoc
-import Data.Map
-import Data.Function ((&))
-import Polysemy
-import Polysemy.Error
-import qualified Data.Text as T
-import Test.Hspec
+import           Data.Function  ((&))
+import           Data.Map
+import qualified Data.Text      as T
+import           Polysemy
+import           Polysemy.Error
+import           Test.Hspec
+import           Text.Pandoc
 
 {-# ANN module "HLint: ignore Reduce duplication" #-}
 
