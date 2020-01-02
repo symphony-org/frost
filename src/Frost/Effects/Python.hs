@@ -1,8 +1,8 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Frost.Effects.Python where
 
-import Frost.Effects.Sys
-import Polysemy
+import           Frost.Effects.Sys
+import           Polysemy
 
 data Python m a where
   Exec :: String -> Python m String

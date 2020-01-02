@@ -1,11 +1,11 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Frost.Effects.Stack where
 
-import FrostError
-import Frost.Effects.Sys
+import           Frost.Effects.Sys
+import           FrostError
 
-import Polysemy
-import Polysemy.Error
+import           Polysemy
+import           Polysemy.Error
 
 type SpecName = String
 type TestName = String

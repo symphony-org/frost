@@ -1,9 +1,9 @@
 module Frost.Plugins.StackPlugins where
 
-import Frost.Plugin
-import Text.Pandoc
-import Polysemy
-import Frost.Effects.Stack
+import           Frost.Effects.Stack
+import           Frost.Plugin
+import           Polysemy
+import           Text.Pandoc
 
 stackPlugin :: (Member Stack r) => String -> Sem r String -> Plugin r
 stackPlugin pluginName stackCommand =

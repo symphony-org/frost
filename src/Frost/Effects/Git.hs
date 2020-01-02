@@ -1,12 +1,12 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Frost.Effects.Git where
 
-import Data.String.Utils
-import Data.List
-import Polysemy
-import SimpleCmd.Git
+import           Data.List
+import           Data.String.Utils
+import           Polysemy
+import           SimpleCmd.Git
 
-import qualified Data.Text as T
+import qualified Data.Text         as T
 
 data Git m a where
   DevsList :: Git m [String]

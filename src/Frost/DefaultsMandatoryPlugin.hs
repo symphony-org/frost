@@ -1,10 +1,10 @@
 module Frost.DefaultsMandatoryPlugin where
 
-import Frost.Plugin
-import Text.Pandoc
-import Polysemy
-import PolysemyContrib
-import Data.Map.Strict
+import           Data.Map.Strict
+import           Frost.Plugin
+import           Polysemy
+import           PolysemyContrib
+import           Text.Pandoc
 
 defaultsMandatoryPlugin :: Plugin r
 defaultsMandatoryPlugin = justMetaPlugin "meta.defaults" (return . Meta . insertTitle . unMeta)

@@ -1,13 +1,13 @@
 {-# LANGUAGE TupleSections #-}
 module Effects.RholangSpec where
 
-import Frost.Effects.Sys
-import Frost.Effects.Rholang
+import           Frost.Effects.Rholang
+import           Frost.Effects.Sys
 
-import Polysemy
+import           Polysemy
 
-import Data.Function               ((&))
-import Test.Hspec
+import           Data.Function         ((&))
+import           Test.Hspec
 
 spec :: Spec
 spec =

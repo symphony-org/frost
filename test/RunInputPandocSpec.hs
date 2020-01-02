@@ -1,21 +1,21 @@
 {-# LANGUAGE QuasiQuotes #-}
 module RunInputPandocSpec where
 
-import Frost.PandocRun
-import Frost.Effects.FileProvider
+import           Frost.Effects.FileProvider
+import           Frost.PandocRun
 
-import Polysemy
-import Polysemy.Input
-import Polysemy.Error
-import Polysemy.State
-import PolysemyContrib
+import           Polysemy
+import           Polysemy.Error
+import           Polysemy.Input
+import           Polysemy.State
+import           PolysemyContrib
 
-import Text.Pandoc
-import Data.Map
-import Data.Function ((&))
-import qualified Data.Text as T
-import Text.RawString.QQ
-import Test.Hspec
+import           Data.Function              ((&))
+import           Data.Map
+import qualified Data.Text                  as T
+import           Test.Hspec
+import           Text.Pandoc
+import           Text.RawString.QQ
 
 fetch :: String -> IO (Either PandocError Pandoc)
 fetch content = do

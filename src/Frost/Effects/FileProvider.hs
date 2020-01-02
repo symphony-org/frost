@@ -1,12 +1,12 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Frost.Effects.FileProvider where
 
-import Polysemy
-import Polysemy.State
+import           Polysemy
+import           Polysemy.State
 
-import qualified Data.Text as T
-import qualified Data.Text.IO as TIO
-import Data.Map
+import           Data.Map
+import qualified Data.Text      as T
+import qualified Data.Text.IO   as TIO
 
 data FileProvider m a where
   ReadFile :: FilePath -> FileProvider m T.Text

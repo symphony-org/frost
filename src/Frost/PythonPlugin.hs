@@ -1,13 +1,13 @@
 module Frost.PythonPlugin where
 
-import Frost.Plugin
-import Frost.Effects.Sys
-import Frost.Effects.Python
+import           Frost.Effects.Python
+import           Frost.Effects.Sys
+import           Frost.Plugin
 
-import Text.Pandoc
-import Polysemy
-import PolysemyContrib
-import Data.Map.Strict
+import           Data.Map.Strict
+import           Polysemy
+import           PolysemyContrib
+import           Text.Pandoc
 
 pythonPlugin :: Member Python r => Plugin r
 pythonPlugin = justContentPlugin "python" (fmap render . exec)

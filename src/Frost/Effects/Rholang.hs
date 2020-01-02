@@ -1,8 +1,8 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Frost.Effects.Rholang where
 
-import Frost.Effects.Sys
-import Polysemy
+import           Frost.Effects.Sys
+import           Polysemy
 
 data Rholang m a where
   Exec :: String -> Rholang m String
