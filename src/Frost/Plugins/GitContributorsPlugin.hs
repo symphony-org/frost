@@ -1,4 +1,4 @@
-module Frost.GitContributorsPlugin where
+module Frost.Plugins.GitContributorsPlugin where
 
 import           Frost.Effects.Git
 import           Frost.Plugin
