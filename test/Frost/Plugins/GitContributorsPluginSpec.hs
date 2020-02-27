@@ -1,11 +1,11 @@
-module GitContributorsPluginSpec where
+module Frost.Plugins.GitContributorsPluginSpec where
 
 import           Frost
 import           Frost.Effects.Git
-import           Frost.GitContributorsPlugin
 import           Frost.Plugin
+import           Frost.Plugins.GitContributorsPlugin
 
-import           Data.Function               ((&))
+import           Data.Function                       ((&))
 import           Polysemy
 import           Test.Hspec
 import           Text.Pandoc
