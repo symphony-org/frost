@@ -8,12 +8,14 @@ import           Frost.Effects.Python
 import           Frost.Effects.Rholang
 import           Frost.Effects.Stack
 import           Frost.Effects.Sys
+import           Frost.Effects.Thut
 import           Frost.PandocRun                     (runInputPandoc,
                                                       runOutputPandoc)
 import           Frost.Plugin
 import           Frost.Plugins.GitContributorsPlugin
 import           Frost.Plugins.RholangPlugin
 import           Frost.Plugins.StackPlugins
+import           Frost.Plugins.ThutPlugin
 import           Frost.PythonPlugin
 import           Frost.TimestampPlugin
 import           FrostError
@@ -42,6 +44,7 @@ main = results >>= traverse handleEithers >>= exit
       & runPython
       & runRholang
       & runStackSys
+      & runThutIO
       & runSysIO
       & runGitIO
       & traceToIO
@@ -51,11 +54,11 @@ main = results >>= traverse handleEithers >>= exit
     handleEithers = either (handle) (either (handle) (const $ return ExitSuccess))
     handle error = hPutStrLn stderr (show error) >> return (ExitFailure 1)
 
-plugins :: Members [Git, Python, Rholang, Sys, Stack] r  => [Plugin r]
+plugins :: Members [Git, Python, Rholang, Sys, Stack, Thut] r  => [Plugin r]
 plugins = [ timestampPlugin
           , timestampMetaPlugin
           , defaultsMandatoryPlugin
           , gitContributorsPlugin
           , pythonPlugin
           , rholangPlugin
-          ] ++ stackPlugins
+          ] ++ stackPlugins ++ thutPlugins
