@@ -22,5 +22,4 @@ runThutIO = interpret $ \case
     filePath = "irrelevant"
     process contents mode = do
       doc <- T.evalText filePath ("```thut:" <> mode <> "\n" <> contents <> "\n```")
-      rendered <- pure $ renderDocument doc
-      pure $ unpack $ rendered
+      pure $ unpack $ renderDocument doc
