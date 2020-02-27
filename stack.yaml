@@ -4,12 +4,12 @@ packages:
 - .
 
 extra-deps:
-# this needs to be done better
 - github-0.22
 - binary-instances-1
 - binary-orphans-1.0.1
 - time-compat-1.9.2.2
-
+- git: https://github.com/felixmulder/thut.git
+  commit: b2ab8b07566b7e3e831721d1911e034f322f6d9c
 
 nix:
   enable: true

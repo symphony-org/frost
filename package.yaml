@@ -38,6 +38,7 @@ dependencies:
 - pandoc
 - text
 - containers
+- thut
 - time
 - simple-cmd
 - MissingH
