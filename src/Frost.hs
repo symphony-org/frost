@@ -1,26 +1,20 @@
 
 module Frost where
 
-import           Frost.DefaultsMandatoryPlugin
+import           Control.Monad
+import           Data.Foldable
 import           Frost.Effects.Git
 import           Frost.Effects.Python
 import           Frost.Effects.Rholang
 import           Frost.Effects.Stack
 import           Frost.Effects.Sys
-import           Frost.GitContributorsPlugin
 import           Frost.Plugin
-import           Frost.Plugins.RholangPlugin
-import           Frost.Plugins.StackPlugins
-import           Frost.PythonPlugin
-import           Frost.TimestampPlugin
 import           FrostError
 
-import           Control.Monad
-import           Data.Foldable
-import           Data.Functor                  ((<&>))
-import           Data.List                     (find)
-import           Data.List.Utils               (split)
-import           Data.Map.Strict               hiding (split)
+import           Data.Functor           ((<&>))
+import           Data.List              (find)
+import           Data.List.Utils        (split)
+import           Data.Map.Strict        hiding (split)
 import           Data.Traversable
 import           Polysemy
 import           Polysemy.Error
@@ -36,7 +30,6 @@ generateDocs :: ( Member (Input Pandoc) r
                 , Member (Error FrostError) r
                 ) => (Pandoc -> Sem r Pandoc) -> Sem r ()
 generateDocs  transform = input >>= transform >>= output
-
 
 transform :: Member (Error FrostError) r => [Plugin r] -> Pandoc -> Sem r Pandoc
 transform plugins (Pandoc meta blocks) = do
@@ -62,12 +55,3 @@ replaceBlock plugins = \case
       case maybePlugin of
         Just plugin ->  substitute plugin content
         Nothing     -> throw $ PluginNotAvailable name
-
-plugins :: Members [Git, Python, Rholang, Sys, Stack] r  => [Plugin r]
-plugins = [ timestampPlugin
-          , timestampMetaPlugin
-          , defaultsMandatoryPlugin
-          , gitContributorsPlugin
-          , pythonPlugin
-          , rholangPlugin
-          ] ++ stackPlugins
