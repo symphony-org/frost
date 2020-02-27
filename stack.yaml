@@ -3,13 +3,13 @@ resolver: lts-14.19
 packages:
 - .
 
-extra-deps: [
-            # this needs to be done better
-          github-0.22,
-          binary-instances-1,
-          binary-orphans-1.0.1,
-          time-compat-1.9.2.2,
-]
+extra-deps:
+# this needs to be done better
+- github-0.22
+- binary-instances-1
+- binary-orphans-1.0.1
+- time-compat-1.9.2.2
+
 
 nix:
   enable: true
