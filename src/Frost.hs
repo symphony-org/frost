@@ -44,20 +44,18 @@ transform plugins (Pandoc meta blocks) = do
   newBlocks <- traverse (replaceBlock plugins) blocks
   return $ Pandoc newMeta (join newBlocks)
 
+replaceBlock :: Member (Error FrostError) r => [Plugin r] -> Block -> Sem r [Block]
+replaceBlock plugins = \case
+  Para inlines -> pure . Para . join <$> traverse (replaceInline plugins) inlines
+  CodeBlock ("",[name],[]) content -> replace plugins name content <&> fst
+  otherwise -> return [otherwise]
   where
-    replaceBlock :: Member (Error FrostError) r => [Plugin r] -> Block -> Sem r [Block]
-    replaceBlock plugins = \case
-        Para inlines -> pure . Para . join <$> traverse (replaceInline plugins) inlines
-        CodeBlock ("",[name],[]) content -> replace plugins name content <&> fst
-        otherwise -> return [otherwise]
-
     replaceInline :: Member (Error FrostError) r => [Plugin r] -> Inline -> Sem r [Inline]
     replaceInline plugins (Code ("",[],[]) nameAndContent) = do
       let (name:contents) = split " " nameAndContent
       let content = join contents
       replace plugins name content <&> snd
     replaceInline plugins otherwise = return [otherwise]
-
     replace :: Member (Error FrostError) r => [Plugin r] -> String -> String -> Sem r ([Block], [Inline])
     replace plugins name content = do
       let maybePlugin = find ((name ==) . ("frost:" ++) . pluginName) plugins
