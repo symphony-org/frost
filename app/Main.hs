@@ -36,8 +36,9 @@ import           System.IO
 import           Text.Pandoc                         (PandocError)
 
 data Config = Config
-  { input  :: [FilePath]
-  , output :: FilePath
+  { input    :: [FilePath]
+  , template :: FilePath
+  , output   :: FilePath
   } deriving Generic
 
 instance ParseRecord Config
@@ -50,9 +51,9 @@ main = do
   where
     exit ExitSuccess     = exitSuccess
     exit (ExitFailure 1) = exitFailure
-    generate (Config filePaths outputFilePath) = generateDocs (transform plugins)
+    generate (Config filePaths templatePath outputFilePath) = generateDocs (transform plugins)
       & runInputPandoc filePaths
-      & runOutputPandoc outputFilePath
+      & runOutputPandoc outputFilePath templatePath
       & runFileProviderIO
       & runPython
       & runRholang
