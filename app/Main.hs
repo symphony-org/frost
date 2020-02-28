@@ -37,7 +37,7 @@ import           Text.Pandoc                         (PandocError)
 
 data Config = Config
   { input    :: [FilePath]
-  , template :: FilePath
+  , template :: Maybe FilePath
   , output   :: FilePath
   } deriving Generic
 
