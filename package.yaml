@@ -36,6 +36,7 @@ dependencies:
 - polysemy
 - polysemy-plugin
 - pandoc
+- optparse-generic
 - text
 - containers
 - thut
