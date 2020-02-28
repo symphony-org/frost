@@ -36,7 +36,8 @@ import           System.IO
 import           Text.Pandoc                         (PandocError)
 
 data Config = Config
-  { input :: [FilePath]
+  { input  :: [FilePath]
+  , output :: FilePath
   } deriving Generic
 
 instance ParseRecord Config
@@ -44,14 +45,14 @@ instance ParseRecord Config
 main :: IO ()
 main = do
   config <- getRecord "Frost"
-  resErr <-  traverse generate (input config)
-  traverse handleEithers resErr >>= exit
+  exitCode <- generate config >>= handleEithers
+  exit exitCode
   where
-    exit = maybe exitSuccess (\_ -> exitFailure) . find (== ExitFailure 1)
-    results = getArgs >>= sequenceA . fmap generate
-    generate filePath = generateDocs (transform plugins)
-      & runInputPandoc filePath
-      & runOutputPandoc filePath
+    exit ExitSuccess     = exitSuccess
+    exit (ExitFailure 1) = exitFailure
+    generate (Config filePaths outputFilePath) = generateDocs (transform plugins)
+      & runInputPandoc filePaths
+      & runOutputPandoc outputFilePath
       & runFileProviderIO
       & runPython
       & runRholang

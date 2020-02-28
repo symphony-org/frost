@@ -19,12 +19,13 @@ import           Text.RawString.QQ
 
 fetch :: String -> IO (Either PandocError Pandoc)
 fetch content = do
-  res <- runInputPandoc "documentation.md" input
+  res <- input
+    & runInputPandoc ["documentation.md"]
     & runFileProviderPure
     & runState (singleton "documentation.md" (T.pack content))
     & runError
     & runM
-  return $ fmap snd res
+  return $ fmap (head . snd) res
 
 pluginAsCodeBlock = [r|
 ```frost:plugin
