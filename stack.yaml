@@ -13,4 +13,4 @@ extra-deps:
 
 nix:
   enable: true
-  packages: [ python3 zlib ]
+  shell-file: shell.nix
