@@ -1,3 +1,5 @@
+{-# LANGUAGE DeriveGeneric     #-}
+{-# LANGUAGE OverloadedStrings #-}
 module Main where
 
 import           Frost
@@ -21,6 +23,7 @@ import           FrostError
 import           Data.Foldable                       (find)
 import           Data.Function                       ((&))
 import qualified Data.Text                           as T
+import           Options.Generic
 import           Polysemy
 import           Polysemy.Error
 import           Polysemy.Trace
@@ -30,8 +33,17 @@ import           System.Exit
 import           System.IO
 import           Text.Pandoc                         (PandocError)
 
+data Config = Config
+  { input :: [FilePath]
+  } deriving Generic
+
+instance ParseRecord Config
+
 main :: IO ()
-main = results >>= traverse handleEithers >>= exit
+main = do
+  config <- getRecord "Frost"
+  resErr <-  traverse generate (input config)
+  traverse handleEithers resErr >>= exit
   where
     exit = maybe exitSuccess (\_ -> exitFailure) . find (== ExitFailure 1)
     results = getArgs >>= sequenceA . fmap generate
