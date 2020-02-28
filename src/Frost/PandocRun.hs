@@ -2,6 +2,7 @@ module Frost.PandocRun where
 
 import           Frost.Effects.FileProvider
 
+import           Data.Text                  (unpack)
 import           Polysemy
 import           Polysemy.Error
 import           Polysemy.Input
@@ -26,11 +27,18 @@ runOutputPandoc :: (
     Member (Embed IO) r
   , Member FileProvider r
   , Member (Error PandocError) r
-  ) => FilePath -> Sem (Output Pandoc ': r) a -> Sem r a
-runOutputPandoc inputFilePath = interpret $ \case
+  ) => FilePath -> FilePath -> Sem (Output Pandoc ': r) a -> Sem r a
+runOutputPandoc inputFilePath templatePath = interpret $ \case
   Output pandoc -> do
-    content <- fromPandocIO $ writeHtml4String def pandoc
+    template <- readFile templatePath
+    let options = mkOptions $ unpack template
+    content <- fromPandocIO $ writeHtml4String options pandoc
     writeFile inputFilePath content
+  where
+    mkOptions template = def
+      { writerTableOfContents = True
+      , writerTemplate = Just template
+      }
 
 fromPandocIO :: (
     PandocMonad PandocIO
