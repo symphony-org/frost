@@ -23,6 +23,8 @@ default-extensions:
 - DataKinds
 - FlexibleContexts
 - GADTs
+- DeriveGeneric
+- StandaloneDeriving
 - LambdaCase
 - PolyKinds
 - RankNTypes

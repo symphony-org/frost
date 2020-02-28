@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveGeneric     #-}
+{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
 
@@ -35,17 +35,18 @@ import           System.Exit
 import           System.IO
 import           Text.Pandoc                         (PandocError)
 
-data Config = Config
-  { input    :: [FilePath]
-  , template :: Maybe FilePath
-  , output   :: FilePath
+data Config a = Config
+  { input    :: a ::: [FilePath]       <?> "Files from which documentation is generated. Accepts multiple values"
+  , template :: a ::: Maybe FilePath   <?> "(optional) HTML template used to generate the documentation"
+  , output   :: a ::: FilePath         <?> "Path to a file that will hold generated documentation"
   } deriving Generic
 
-instance ParseRecord Config
+instance ParseRecord (Config Wrapped)
+deriving instance Show (Config Unwrapped)
 
 main :: IO ()
 main = do
-  config <- getRecord "Frost"
+  config <- unwrapRecord "Frost - automatically generates documentation from your source code"
   exitCode <- generate config >>= handleEithers
   exit exitCode
   where
