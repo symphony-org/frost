@@ -11,6 +11,7 @@ import           Frost.Effects.Sys
 import           Frost.Plugin
 import           FrostError
 
+import           Data.Foldable          (fold)
 import           Data.Functor           ((<&>))
 import           Data.List              (find)
 import           Data.List.Utils        (split)
@@ -25,11 +26,14 @@ import           Text.Pandoc.Extensions
 
 {-# ANN module "HLint: ignore Used otherwise as a pattern" #-}
 
-generateDocs :: ( Member (Input Pandoc) r
+generateDocs :: ( Member (Input [Pandoc]) r
                 , Member (Output Pandoc) r
                 , Member (Error FrostError) r
                 ) => (Pandoc -> Sem r Pandoc) -> Sem r ()
-generateDocs  transform = input >>= transform >>= output
+generateDocs  transform = do
+  docs            <- input
+  transformedDocs <- traverse transform docs
+  output $ fold transformedDocs
 
 transform :: Member (Error FrostError) r => [Plugin r] -> Pandoc -> Sem r Pandoc
 transform plugins (Pandoc meta blocks) = do

@@ -14,11 +14,11 @@ runInputPandoc :: (
     Member (Embed IO) r
   , Member FileProvider r
   , Member (Error PandocError) r
-  ) => FilePath -> Sem (Input Pandoc ': r) a -> Sem r a
-runInputPandoc filePath = interpret $ \case
+  ) => [FilePath] -> Sem (Input [Pandoc] ': r) a -> Sem r a
+runInputPandoc filePaths = interpret $ \case
   Input -> do
-    content <- readFile filePath
-    fromPandocIO $ readMarkdown settings content
+    contents <- traverse readFile filePaths
+    traverse (fromPandocIO . readMarkdown settings) contents
   where
     settings = def { readerExtensions = extensionsFromList [Ext_yaml_metadata_block, Ext_backtick_code_blocks]}
 
@@ -30,7 +30,7 @@ runOutputPandoc :: (
 runOutputPandoc inputFilePath = interpret $ \case
   Output pandoc -> do
     content <- fromPandocIO $ writeHtml4String def pandoc
-    writeFile (inputFilePath ++ ".html") content
+    writeFile inputFilePath content
 
 fromPandocIO :: (
     PandocMonad PandocIO
