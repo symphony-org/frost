@@ -21,5 +21,6 @@ runThutIO = interpret $ \case
   where
     filePath = "irrelevant"
     process contents mode = do
-      doc <- T.evalText filePath ("```thut:" <> mode <> "\n" <> contents <> "\n```")
+      doc <- T.evalText' config filePath ("```thut:" <> mode <> "\n" <> contents <> "\n```")
       pure $ unpack $ renderDocument doc
+    config = InterpreterConfig "stack repl" False Plain
