@@ -2,7 +2,6 @@
 module Frost where
 
 import           Control.Monad
-import           Data.Foldable
 import           Frost.Effects.Git
 import           Frost.Effects.Python
 import           Frost.Effects.Rholang
