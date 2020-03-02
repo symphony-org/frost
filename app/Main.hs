@@ -52,9 +52,9 @@ main = do
   where
     exit ExitSuccess     = exitSuccess
     exit (ExitFailure 1) = exitFailure
-    generate (Config filePaths templatePath outputFilePath) = generateDocs (transform plugins)
-      & runInputPandoc filePaths
-      & runOutputPandoc outputFilePath templatePath
+    generate (Config inputPaths templatePath outputPath) = generateDocs (transform plugins)
+      & runInputPandoc inputPaths
+      & runOutputPandoc outputPath templatePath
       & runFileProviderIO
       & runPython
       & runRholang
