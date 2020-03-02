@@ -6,6 +6,7 @@ import           Frost
 import           Frost.DefaultsMandatoryPlugin
 import           Frost.Effects.FileProvider
 import           Frost.Effects.Git
+import           Frost.Effects.PlantUml
 import           Frost.Effects.Python
 import           Frost.Effects.Rholang
 import           Frost.Effects.Stack
@@ -15,6 +16,7 @@ import           Frost.PandocRun                     (runInputPandoc,
                                                       runOutputPandoc)
 import           Frost.Plugin
 import           Frost.Plugins.GitContributorsPlugin
+import           Frost.Plugins.PlantUmlPlugin
 import           Frost.Plugins.RholangPlugin
 import           Frost.Plugins.StackPlugins
 import           Frost.Plugins.ThutPlugin
@@ -28,6 +30,7 @@ import qualified Data.Text                           as T
 import           Options.Generic
 import           Polysemy
 import           Polysemy.Error
+import           Polysemy.State
 import           Polysemy.Trace
 import           PolysemyContrib
 import           System.Environment                  (getArgs)
@@ -60,6 +63,8 @@ main = do
       & runRholang
       & runStackSys
       & runThutIO
+      & runPlantUmlIO
+      & evalState (PlantUmlPngCounter 0)
       & runSysIO
       & runGitIO
       & traceToIO
@@ -69,11 +74,12 @@ main = do
     handleEithers = either (handle) (either (handle) (const $ return ExitSuccess))
     handle error = hPutStrLn stderr (show error) >> return (ExitFailure 1)
 
-plugins :: Members [Git, Python, Rholang, Sys, Stack, Thut] r  => [Plugin r]
+plugins :: Members [Git, PlantUml, Python, Rholang, Sys, Stack, Thut] r  => [Plugin r]
 plugins = [ timestampPlugin
           , timestampMetaPlugin
           , defaultsMandatoryPlugin
           , gitContributorsPlugin
           , pythonPlugin
           , rholangPlugin
+          , plantUmlPlugin
           ] ++ stackPlugins ++ thutPlugins
