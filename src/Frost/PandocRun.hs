@@ -28,12 +28,12 @@ runOutputPandoc :: (
   , Member FileProvider r
   , Member (Error PandocError) r
   ) => FilePath -> Maybe FilePath -> Sem (Output Pandoc ': r) a -> Sem r a
-runOutputPandoc inputFilePath templatePath = interpret $ \case
+runOutputPandoc outputPath templatePath = interpret $ \case
   Output pandoc -> do
     template <- traverse readFile templatePath
     let options = mkOptions template
     content <- fromPandocIO $ writeHtml4String options pandoc
-    writeFile inputFilePath content
+    writeFile outputPath content
   where
     mkOptions template = def
       { writerTableOfContents = True
