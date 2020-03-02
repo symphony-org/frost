@@ -46,7 +46,7 @@ $endif$
               $endif$
               $for(header-includes)$
               $header-includes$
-              $endfor$   
+              $endfor$
     </head>
 
     <body>
@@ -68,7 +68,7 @@ $endif$
             </div>
             $endif$
 
-            <div class="uk-grid" data-uk-grid-margin >          
+            <div class="uk-grid" data-uk-grid-margin >
                 <div class="uk-width-medium-1-4">
                     <div class="uk-overflow-container" data-uk-sticky="{top:25,media: 768}">
                         <div class="uk-panel uk-panel-box menu-begin" >
@@ -82,19 +82,9 @@ $endif$
                 </div>
 
                 <div class="uk-width-medium-3-4">
-$body$                    
+$body$
                 </div>
             </div>
-$if(analytics)$                    
-            <script>
-                  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', '$analytics$', 'auto');
-  ga('send', 'pageview');
-$endif$
             <script src="https://vjs.zencdn.net/5.4.4/video.js"></script>
         </div>
     </body>
