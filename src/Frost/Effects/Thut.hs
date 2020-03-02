@@ -23,4 +23,5 @@ runThutIO = interpret $ \case
     process contents mode = do
       doc <- T.evalText' config filePath ("```thut:" <> mode <> "\n" <> contents <> "\n```")
       pure $ unpack $ renderDocument doc
-    config = InterpreterConfig "stack repl" False Plain
+    config = InterpreterConfig "stack repl" False Plain verboseGhcid
+    verboseGhcid = False

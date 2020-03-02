@@ -9,7 +9,7 @@ extra-deps:
 - binary-orphans-1.0.1
 - time-compat-1.9.2.2
 - git: https://github.com/felixmulder/thut.git
-  commit: b2ab8b07566b7e3e831721d1911e034f322f6d9c
+  commit: baa88f25f3b615d202b5dd36ef65d12acb55f837
 
 nix:
   enable: true

@@ -3,6 +3,6 @@ with (import <nixpkgs> {});
 
 haskell.lib.buildStackProject {
   inherit ghc;
-  name = "myEnv";
+  name = "frost";
   buildInputs = [ python3 zlib ghcid ];
 }
