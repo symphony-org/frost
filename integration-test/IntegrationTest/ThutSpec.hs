@@ -1,5 +1,4 @@
 {-# LANGUAGE OverloadedStrings #-}
-
 module IntegrationTest.ThutSpec where
 
 import           Frost.Effects.Thut
