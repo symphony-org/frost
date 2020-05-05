@@ -1,4 +1,3 @@
-{-# LANGUAGE TupleSections #-}
 module PythonSpec where
 
 import           Frost.Effects.Python
