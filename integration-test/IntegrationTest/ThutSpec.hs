@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TupleSections     #-}
+
 module IntegrationTest.ThutSpec where
 
 import           Frost.Effects.Thut

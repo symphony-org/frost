@@ -66,8 +66,8 @@ main = do
       & runError @FrostError
       & runError @PandocError
       & runM
-    handleEithers = either (handle) (either (handle) (const $ return ExitSuccess))
-    handle error = hPutStrLn stderr (show error) >> return (ExitFailure 1)
+    handleEithers = either handle (either handle (const $ return ExitSuccess))
+    handle error = hPrint stderr error >> return (ExitFailure 1)
 
 plugins :: Members [Git, Python, Rholang, Sys, Stack, Thut] r  => [Plugin r]
 plugins = [ timestampPlugin
