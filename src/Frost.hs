@@ -23,7 +23,7 @@ import           Polysemy.Output
 import           Text.Pandoc
 import           Text.Pandoc.Extensions
 
-{-# ANN module "HLint: ignore Used otherwise as a pattern" #-}
+{-# ANN module ("HLint: ignore Used otherwise as a pattern" :: String) #-}
 
 generateDocs :: ( Member (Input [Pandoc]) r
                 , Member (Output Pandoc) r

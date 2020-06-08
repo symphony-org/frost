@@ -20,6 +20,7 @@ ghc-options:
 
 
 default-extensions:
+- OverloadedStrings
 - DataKinds
 - FlexibleContexts
 - GADTs
