@@ -12,7 +12,7 @@ import           Polysemy.Error
 import           Test.Hspec
 import           Text.Pandoc
 
-{-# ANN module "HLint: ignore Reduce duplication" #-}
+{-# ANN module ("HLint: ignore Reduce duplication" :: String) #-}
 
 purgePlugin :: Plugin r
 purgePlugin = Plugin { pluginName = "null"

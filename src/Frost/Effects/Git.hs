@@ -26,5 +26,5 @@ getContributors  = do
     output <- git "log" ["--pretty=short", "-s"]
     let s = T.split (=='\n') (T.pack output)
     let r = nub $ filter (startswith  "Author:" . T.unpack) s
-    let f = fmap (drop (length "Author: ") . T.unpack) r
+    let f = fmap (drop (length ("Author: " :: String)) . T.unpack) r
     return f
