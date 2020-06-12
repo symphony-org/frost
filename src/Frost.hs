@@ -1,4 +1,4 @@
-
+{-# LANGUAGE OverloadedStrings #-}
 module Frost where
 
 import           Control.Monad
@@ -10,10 +10,11 @@ import           Frost.Effects.Sys
 import           Frost.Plugin
 import           FrostError
 
+import           Data.Text hiding (find)
+import qualified Data.Text as T
 import           Data.Foldable          (fold)
 import           Data.Functor           ((<&>))
 import           Data.List              (find)
-import           Data.List.Utils        (split)
 import           Data.Map.Strict        hiding (split)
 import           Data.Traversable
 import           Polysemy
@@ -48,13 +49,13 @@ replaceBlock plugins = \case
   where
     replaceInline :: Member (Error FrostError) r => [Plugin r] -> Inline -> Sem r [Inline]
     replaceInline plugins (Code ("",[],[]) nameAndContent) = do
-      let (name:contents) = split " " nameAndContent
-      let content = join contents
+      let (name:contents) = T.split (== ' ') nameAndContent
+      let content = T.concat contents
       replace plugins name content <&> snd
     replaceInline plugins otherwise = return [otherwise]
-    replace :: Member (Error FrostError) r => [Plugin r] -> String -> String -> Sem r ([Block], [Inline])
+    replace :: Member (Error FrostError) r => [Plugin r] -> Text -> Text -> Sem r ([Block], [Inline])
     replace plugins name content = do
-      let maybePlugin = find ((name ==) . ("frost:" ++) . pluginName) plugins
+      let maybePlugin = find ((name ==) . ("frost:" <>) . pluginName) plugins
       case maybePlugin of
         Just plugin ->  substitute plugin content
         Nothing     -> throw $ PluginNotAvailable name

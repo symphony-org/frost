@@ -2,7 +2,7 @@ module Frost.TimestampPlugin where
 
 import           Frost.Effects.Sys
 import           Frost.Plugin
-
+import           Data.Text
 import           Data.Functor
 import           Data.Map.Strict
 import           Polysemy
@@ -13,9 +13,9 @@ timestampMetaPlugin = justMetaPlugin "timestamp:meta" (\meta -> do
   time <- currentTime
   return $ Meta $ insertTimestamp time $ unMeta meta)
   where
-    insertTimestamp t= insert "creation" (MetaString $ show t)
+    insertTimestamp t= insert "creation" (MetaString $ pack $ show t)
 
 timestampPlugin :: Member Sys r => Plugin r
 timestampPlugin = justContentPlugin "timestamp" (\_ -> currentTime <&> render)
   where
-    render t = ([Plain [Str $ show t]], [Str $ show t])
+    render t = ([Plain [Str $ pack $ show t]], [Str $ pack $ show t])

@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Frost.PythonPlugin where
 
 import           Frost.Effects.Python

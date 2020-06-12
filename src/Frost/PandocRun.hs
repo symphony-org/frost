@@ -37,7 +37,7 @@ runOutputPandoc outputPath templatePath = interpret $ \case
   where
     mkOptions template = def
       { writerTableOfContents = True
-      , writerTemplate = fmap unpack template
+      -- , writerTemplate = fmap (compileDefaultTemplate) template TODO: disable templates for now
       }
 
 fromPandocIO :: (

@@ -1,4 +1,3 @@
-
 module Frost.Plugins.LatestIssuesPlugin where
 
 import           Data.List

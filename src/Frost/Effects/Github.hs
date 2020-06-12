@@ -2,6 +2,7 @@
 {-# LANGUAGE TemplateHaskell   #-}
 module Frost.Effects.Github where
 
+import           Data.Text
 import qualified Data.List.Split         as DLS
 import qualified Data.Vector             as DV
 import           FrostError
@@ -13,10 +14,10 @@ import           Polysemy
 import           Polysemy.Error
 import           PolysemyContrib
 
-type Issue = String
+type Issue = Text 
 
 data Github m a where
-  Issues :: String -> Github m [Issue]
+  Issues :: Text -> Github m [Issue]
 
 makeSem ''Github
 
@@ -27,12 +28,12 @@ runGithubPure issues = interpret $ \case
 runGithubIO :: (Member (Embed IO) r, Member (Error FrostError) r) => Sem (Github ': r) a  -> Sem r a
 runGithubIO = interpret $ \case
   Issues repo -> do
-    (username, reponame) <- either throw return (parseRepo repo)
+    (username, reponame) <- either throw return (parseRepo $ unpack repo)
     fromEitherSem $ embed $ issuesForFrost username reponame
   where
     issuesForFrost username reponame = do
       mis <- GHI.issuesForRepo username reponame GHO.optionsAnyMilestone
-      return $ either (Left . FrostError . show) (Right . fmap (GIP.unpack . GHDI.issueTitle) . DV.toList) mis
+      return $ either (Left . FrostError . show) (Right . fmap (pack . GIP.unpack . GHDI.issueTitle) . DV.toList) mis
     parseRepo :: String -> Either FrostError (GHI.Name GHI.Owner, GHI.Name GHI.Repo)
     parseRepo d = case DLS.splitOn "/" d of
         [username, reponame] -> Right (GHI.mkOwnerName $ GIP.pack username, GHI.mkRepoName $ GIP.pack reponame)

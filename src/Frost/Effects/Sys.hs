@@ -3,6 +3,7 @@ module Frost.Effects.Sys where
 
 import           FrostError
 
+import           Data.Text
 import           Data.Functor
 import           Data.Time.Clock
 import           Polysemy
@@ -11,16 +12,16 @@ import           System.Exit     (ExitCode (..))
 import           System.IO       (hGetContents)
 import           System.Process  (runInteractiveCommand, waitForProcess)
 
-type StdOut = String
-type StdErr = String
+type StdOut = Text 
+type StdErr = Text 
 
 data Sys m a where
   CurrentTime :: Sys m UTCTime
-  Cmd :: String -> Sys m (StdOut, StdErr)
+  Cmd :: Text -> Sys m (StdOut, StdErr)
 
 makeSem ''Sys
 
-runSysPure :: UTCTime -> (String -> (StdOut, StdErr)) -> Sem (Sys ': r) a -> Sem r a
+runSysPure :: UTCTime -> (Text -> (StdOut, StdErr)) -> Sem (Sys ': r) a -> Sem r a
 runSysPure ct cmdFun = interpret $ \case
   CurrentTime -> return ct
   Cmd command -> return $ cmdFun command
@@ -38,10 +39,10 @@ runSysIO = interpret $ \case
       (_, _, ExitFailure i) -> Left $ ExitedWithFailure i
       (stdOut, stdErr, ExitSuccess) -> Right (stdOut, stdErr))
 
-getProcessOutput :: String -> IO (StdOut, StdErr, ExitCode)
+getProcessOutput :: Text -> IO (StdOut, StdErr, ExitCode)
 getProcessOutput command =
-  do (_pIn, pOut, pErr, handle) <- runInteractiveCommand command
+  do (_pIn, pOut, pErr, handle) <- runInteractiveCommand $ unpack command
      exitCode <- waitForProcess handle
      stdOut   <- hGetContents pOut
      stdErr   <- hGetContents pErr
-     return (stdOut, stdErr, exitCode)
+     return (pack stdOut, pack stdErr, exitCode)

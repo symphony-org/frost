@@ -9,8 +9,8 @@ import           Thut        as T
 import           Thut.Render as T
 
 data Thut m a where
-  Eval :: Text -> Thut m String
-  Passthrough :: Text -> Thut m String
+  Eval :: Text -> Thut m Text 
+  Passthrough :: Text -> Thut m Text 
 
 makeSem ''Thut
 
@@ -22,6 +22,6 @@ runThutIO = interpret $ \case
     filePath = "irrelevant"
     process contents mode = do
       doc <- T.evalText' config filePath ("```thut:" <> mode <> "\n" <> contents <> "\n```")
-      pure $ unpack $ renderDocument doc
+      pure $ renderDocument doc
     config = InterpreterConfig "stack repl" False Plain verboseGhcid
     verboseGhcid = False

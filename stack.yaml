@@ -1,16 +1,21 @@
-resolver: lts-14.27
+resolver: lts-16.0
 
 packages:
 - .
 
 extra-deps:
-- github-0.22
+- github-0.23
 - binary-instances-1
 - binary-orphans-1.0.1
 - time-compat-1.9.2.2
+# needed to make thut happy, TODO update thut
+- extra-1.6.21@sha256:1e04429779702160356af6b3b8dd8531d5997f69bb1419f80a1a33b690c92f25,2757
+- ghcid-0.7.7@sha256:916ee877c52a44953e5f9b905907f959dd3435d13b241b012ad8b006416da4bb,3510
 - git: https://github.com/felixmulder/thut.git
-  commit: baa88f25f3b615d202b5dd36ef65d12acb55f837
-
+  commit: c59da80fe74fdb66c6fe654a52d8901d927f0d74
+# polysemy plugin missing in stackage, what? TODO talk to isovector
+- polysemy-plugin-0.2.5.0@sha256:67e30be568a141b852aace1a60e180cb5060fbb2835365a81a3ea779536d6d35,2952
+- ghc-tcplugins-extra-0.3.2@sha256:1bbfd4449c3669a31618ea0ebc5d00d980a53988daad3b6218bab5c8cdff268d,1687
 nix:
   enable: true
   shell-file: shell.nix

@@ -1,11 +1,12 @@
 module Frost.Plugins.StackPlugins where
 
+import           Data.Text
 import           Frost.Effects.Stack
 import           Frost.Plugin
 import           Polysemy
 import           Text.Pandoc
 
-stackPlugin :: (Member Stack r) => String -> Sem r String -> Plugin r
+stackPlugin :: (Member Stack r) => Text -> Sem r Text -> Plugin r
 stackPlugin pluginName stackCommand =
   justContentPlugin pluginName (\_ -> do
     output <- stackCommand

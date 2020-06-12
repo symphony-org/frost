@@ -7,8 +7,8 @@ import           Frost.Plugin
 import           Polysemy
 import           Text.Pandoc
 
-thutPlugin :: Member Thut r => String -> (Text -> Sem r String) -> Plugin r
-thutPlugin mode command = justContentPlugin mode (\text -> render <$> command (pack text) )
+thutPlugin :: Member Thut r => Text -> (Text -> Sem r Text) -> Plugin r
+thutPlugin mode command = justContentPlugin mode (\text -> render <$> command text )
   where
     render out = ([Plain [Str out]], [Str out])
 
