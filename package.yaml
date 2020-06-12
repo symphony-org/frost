@@ -18,6 +18,14 @@ extra-source-files:
 ghc-options:
 - -fplugin=Polysemy.Plugin
 
+# This condition is added to make MacOS users happy. It's apparently known bug in
+# cabal (https://github.com/haskell/cabal/issues/4739) that the whole Haskell
+# community is aware of.
+# Below is a workaround to make code work on Mac.
+when:
+  - condition: os(darwin)
+    ghc-options:
+    - -optP-Wno-nonportable-include-path
 
 default-extensions:
 - OverloadedStrings
